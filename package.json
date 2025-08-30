@@ -1,0 +1,37 @@
+{
+  "name": "flyer-ui",
+  "version": "1.0.0",
+  "description": "基于 uni-app x 的移动端组件库",
+  "main": "main.uts",
+  "keywords": [
+    "uni-app",
+    "uni-app-x",
+    "uts",
+    "vue3",
+    "mobile",
+    "ui",
+    "components"
+  ],
+  "author": "flyer-ui",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/flyer-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/flyer-ui/issues"
+  },
+  "homepage": "https://github.com/your-username/flyer-ui#readme",
+  "scripts": {
+    "dev": "echo '请在HBuilderX中运行项目'",
+    "build": "echo '请在HBuilderX中构建项目'",
+    "lint": "echo '代码格式检查'",
+    "docs": "echo '生成文档'"
+  },
+  "engines": {
+    "HBuilderX": ">=3.9.0"
+  },
+  "uni-app": {
+    "scripts": {}
+  }
+}

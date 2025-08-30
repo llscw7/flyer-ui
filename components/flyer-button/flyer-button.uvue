@@ -1,0 +1,281 @@
+<template>
+	<view 
+		class="flyer-button"
+		:class="[
+			`flyer-button--${type}`, 
+			`flyer-button--${size}`,
+			{
+				'flyer-button--disabled': disabled,
+				'flyer-button--loading': loading,
+				'flyer-button--plain': plain,
+				'flyer-button--round': round,
+				'flyer-button--block': block
+			}
+		]"
+		:style="customStyle"
+		@click="handleClick"
+	>
+		<!-- 加载状态 -->
+		<view v-if="loading" class="flyer-button__loading">
+			<text class="flyer-button__loading-icon">●</text>
+		</view>
+		
+		<!-- 图标 -->
+		<view v-if="icon && !loading" class="flyer-button__icon">
+			<text class="flyer-button__icon-text">{{ icon }}</text>
+		</view>
+		
+		<!-- 按钮文字 -->
+		<text v-if="$slots.default || text" class="flyer-button__text">
+			<slot>{{ text }}</slot>
+		</text>
+	</view>
+</template>
+
+<script setup lang="uts">
+	// 使用 defineOptions 定义组件名
+	defineOptions({
+		name: 'FlyerButton'
+	})
+
+	// 定义 Props
+	const props = defineProps({
+		// 按钮类型：primary | success | warning | danger | info | default
+		type: {
+			type: String,
+			default: 'default'
+		},
+		// 按钮尺寸：large | normal | small | mini
+		size: {
+			type: String,
+			default: 'normal'
+		},
+		// 按钮文字
+		text: {
+			type: String,
+			default: ''
+		},
+		// 是否禁用
+		disabled: {
+			type: Boolean,
+			default: false
+		},
+		// 是否加载中
+		loading: {
+			type: Boolean,
+			default: false
+		},
+		// 是否朴素按钮
+		plain: {
+			type: Boolean,
+			default: false
+		},
+		// 是否圆角按钮
+		round: {
+			type: Boolean,
+			default: false
+		},
+		// 是否块级按钮
+		block: {
+			type: Boolean,
+			default: false
+		},
+		// 图标
+		icon: {
+			type: String,
+			default: ''
+		},
+		// 自定义样式
+		customStyle: {
+			type: Object,
+			default: () => {
+				return {}
+			}
+		}
+	})
+
+	// 定义 Emits
+	const emit = defineEmits<{
+		(e: 'click', event: any): void
+	}>()
+
+	// 方法
+	const handleClick = (event: any) => {
+		if (props.disabled || props.loading) {
+			return
+		}
+		emit('click', event)
+	}
+</script>
+
+<style>
+	.flyer-button {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		padding: 12px 24px;
+		border-width: 1px;
+		border-style: solid;
+		border-radius: 4px;
+		font-size: 14px;
+		line-height: 20px;
+		text-align: center;
+		cursor: pointer;
+		transition: all 0.3s;
+		user-select: none;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	
+	/* 按钮类型样式 */
+	.flyer-button--default {
+		background-color: #ffffff;
+		border-color: #d9d9d9;
+		color: #333333;
+	}
+	
+	.flyer-button--primary {
+		background-color: #007aff;
+		border-color: #007aff;
+		color: #ffffff;
+	}
+	
+	.flyer-button--success {
+		background-color: #4cd964;
+		border-color: #4cd964;
+		color: #ffffff;
+	}
+	
+	.flyer-button--warning {
+		background-color: #f0ad4e;
+		border-color: #f0ad4e;
+		color: #ffffff;
+	}
+	
+	.flyer-button--danger {
+		background-color: #dd524d;
+		border-color: #dd524d;
+		color: #ffffff;
+	}
+	
+	.flyer-button--info {
+		background-color: #909399;
+		border-color: #909399;
+		color: #ffffff;
+	}
+	
+	/* 朴素按钮样式 */
+	.flyer-button--plain.flyer-button--default {
+		background-color: #ffffff;
+		color: #333333;
+	}
+	
+	.flyer-button--plain.flyer-button--primary {
+		background-color: #ecf5ff;
+		color: #007aff;
+	}
+	
+	.flyer-button--plain.flyer-button--success {
+		background-color: #f0f9ff;
+		color: #4cd964;
+	}
+	
+	.flyer-button--plain.flyer-button--warning {
+		background-color: #fdf6ec;
+		color: #f0ad4e;
+	}
+	
+	.flyer-button--plain.flyer-button--danger {
+		background-color: #fef0f0;
+		color: #dd524d;
+	}
+	
+	.flyer-button--plain.flyer-button--info {
+		background-color: #f4f4f5;
+		color: #909399;
+	}
+	
+	/* 按钮尺寸样式 */
+	.flyer-button--large {
+		padding: 15px 30px;
+		font-size: 16px;
+		line-height: 24px;
+	}
+	
+	.flyer-button--normal {
+		padding: 12px 24px;
+		font-size: 14px;
+		line-height: 20px;
+	}
+	
+	.flyer-button--small {
+		padding: 8px 16px;
+		font-size: 12px;
+		line-height: 18px;
+	}
+	
+	.flyer-button--mini {
+		padding: 4px 12px;
+		font-size: 10px;
+		line-height: 16px;
+	}
+	
+	/* 圆角按钮 */
+	.flyer-button--round {
+		border-radius: 20px;
+	}
+	
+	/* 块级按钮 */
+	.flyer-button--block {
+		width: 100%;
+		display: flex;
+	}
+	
+	/* 禁用状态 */
+	.flyer-button--disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+	
+	/* 加载状态 */
+	.flyer-button--loading {
+		opacity: 0.8;
+		cursor: not-allowed;
+	}
+	
+	.flyer-button__loading {
+		margin-right: 8px;
+	}
+	
+	.flyer-button__loading-icon {
+		animation: rotating 2s linear infinite;
+		color: inherit;
+	}
+	
+	.flyer-button__icon {
+		margin-right: 8px;
+	}
+	
+	.flyer-button__icon-text {
+		color: inherit;
+		font-size: inherit;
+	}
+	
+	.flyer-button__text {
+		color: inherit;
+		font-size: inherit;
+		line-height: inherit;
+	}
+	
+	/* 旋转动画 */
+	@keyframes rotating {
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+</style>

@@ -1,0 +1,222 @@
+<template>
+	<!-- #ifdef APP -->
+	<scroll-view class="container">
+	<!-- #endif -->
+		<view class="demo-page">
+			<!-- 页面标题 -->
+			<view class="demo-header">
+				<text class="demo-title">Button 按钮</text>
+				<text class="demo-desc">按钮用于触发一个操作，如提交表单。</text>
+			</view>
+
+			<!-- 基础用法 -->
+			<view class="demo-section">
+				<text class="demo-section-title">基础用法</text>
+				<view class="demo-content">
+					<view class="button-row">
+						<flyer-button text="默认按钮" @click="handleClick('默认按钮')"></flyer-button>
+						<flyer-button type="primary" text="主要按钮" @click="handleClick('主要按钮')"></flyer-button>
+					</view>
+					<view class="button-row">
+						<flyer-button type="success" text="成功按钮" @click="handleClick('成功按钮')"></flyer-button>
+						<flyer-button type="warning" text="警告按钮" @click="handleClick('警告按钮')"></flyer-button>
+					</view>
+					<view class="button-row">
+						<flyer-button type="danger" text="危险按钮" @click="handleClick('危险按钮')"></flyer-button>
+						<flyer-button type="info" text="信息按钮" @click="handleClick('信息按钮')"></flyer-button>
+					</view>
+				</view>
+			</view>
+
+			<!-- 朴素按钮 -->
+			<view class="demo-section">
+				<text class="demo-section-title">朴素按钮</text>
+				<view class="demo-content">
+					<view class="button-row">
+						<flyer-button plain text="朴素按钮" @click="handleClick('朴素按钮')"></flyer-button>
+						<flyer-button plain type="primary" text="主要按钮" @click="handleClick('朴素主要')"></flyer-button>
+					</view>
+					<view class="button-row">
+						<flyer-button plain type="success" text="成功按钮" @click="handleClick('朴素成功')"></flyer-button>
+						<flyer-button plain type="warning" text="警告按钮" @click="handleClick('朴素警告')"></flyer-button>
+					</view>
+				</view>
+			</view>
+
+			<!-- 禁用状态 -->
+			<view class="demo-section">
+				<text class="demo-section-title">禁用状态</text>
+				<view class="demo-content">
+					<view class="button-row">
+						<flyer-button disabled text="禁用按钮"></flyer-button>
+						<flyer-button disabled type="primary" text="主要按钮"></flyer-button>
+					</view>
+					<view class="button-row">
+						<flyer-button disabled plain text="朴素按钮"></flyer-button>
+						<flyer-button disabled plain type="primary" text="主要按钮"></flyer-button>
+					</view>
+				</view>
+			</view>
+
+			<!-- 加载状态 -->
+			<view class="demo-section">
+				<text class="demo-section-title">加载状态</text>
+				<view class="demo-content">
+					<view class="button-row">
+						<flyer-button loading text="加载中" @click="handleLoading"></flyer-button>
+						<flyer-button :loading="isLoading" type="primary" text="点击加载" @click="handleLoading"></flyer-button>
+					</view>
+				</view>
+			</view>
+
+			<!-- 不同尺寸 -->
+			<view class="demo-section">
+				<text class="demo-section-title">不同尺寸</text>
+				<view class="demo-content">
+					<view class="button-column">
+						<flyer-button size="large" type="primary" text="大型按钮" @click="handleClick('大型')"></flyer-button>
+						<flyer-button size="normal" type="primary" text="普通按钮" @click="handleClick('普通')"></flyer-button>
+						<flyer-button size="small" type="primary" text="小型按钮" @click="handleClick('小型')"></flyer-button>
+						<flyer-button size="mini" type="primary" text="迷你按钮" @click="handleClick('迷你')"></flyer-button>
+					</view>
+				</view>
+			</view>
+
+			<!-- 圆角按钮 -->
+			<view class="demo-section">
+				<text class="demo-section-title">圆角按钮</text>
+				<view class="demo-content">
+					<view class="button-row">
+						<flyer-button round text="圆角按钮" @click="handleClick('圆角')"></flyer-button>
+						<flyer-button round type="primary" text="主要按钮" @click="handleClick('圆角主要')"></flyer-button>
+					</view>
+				</view>
+			</view>
+
+			<!-- 块级按钮 -->
+			<view class="demo-section">
+				<text class="demo-section-title">块级按钮</text>
+				<view class="demo-content">
+					<flyer-button block type="primary" text="块级按钮" @click="handleClick('块级')"></flyer-button>
+				</view>
+			</view>
+
+			<!-- 带图标的按钮 -->
+			<view class="demo-section">
+				<text class="demo-section-title">带图标的按钮</text>
+				<view class="demo-content">
+					<view class="button-row">
+						<flyer-button icon="🔍" text="搜索" @click="handleClick('搜索')"></flyer-button>
+						<flyer-button type="primary" icon="📁" text="文件夹" @click="handleClick('文件夹')"></flyer-button>
+					</view>
+				</view>
+			</view>
+		</view>
+	<!-- #ifdef APP -->
+	</scroll-view>
+	<!-- #endif -->
+</template>
+
+<script setup lang="uts">
+	// 响应式数据
+	const isLoading = ref<boolean>(false)
+
+	// 点击处理方法
+	const handleClick = (type: string) => {
+		uni.showToast({
+			title: `点击了${type}`,
+			icon: 'none',
+			duration: 1500
+		})
+	}
+	
+	// 加载处理方法
+	const handleLoading = () => {
+		isLoading.value = true
+		setTimeout(() => {
+			isLoading.value = false
+			uni.showToast({
+				title: '加载完成',
+				icon: 'success',
+				duration: 1500
+			})
+		}, 2000)
+	}
+</script>
+
+<style>
+	.container {
+		flex: 1;
+	}
+	
+	.demo-page {
+		padding: 20px;
+		background-color: #f2f3f5;
+	}
+	
+	.demo-header {
+		margin-bottom: 30px;
+	}
+	
+	.demo-title {
+		font-size: 24px;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 8px;
+	}
+	
+	.demo-desc {
+		font-size: 14px;
+		color: #909399;
+		line-height: 20px;
+	}
+	
+	.demo-section {
+		margin-bottom: 30px;
+		background-color: #ffffff;
+		border-radius: 8px;
+		padding: 20px;
+	}
+	
+	.demo-section-title {
+		font-size: 16px;
+		font-weight: bold;
+		color: #333333;
+		margin-bottom: 16px;
+	}
+	
+	.demo-content {
+		flex-direction: column;
+	}
+	
+	.button-row {
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-bottom: 16px;
+	}
+	
+	.button-row:last-child {
+		margin-bottom: 0;
+	}
+	
+	.button-column {
+		flex-direction: column;
+	}
+	
+	.button-column .flyer-button {
+		margin-bottom: 12px;
+	}
+	
+	.button-column .flyer-button:last-child {
+		margin-bottom: 0;
+	}
+	
+	.button-row .flyer-button {
+		margin-right: 12px;
+		margin-bottom: 12px;
+	}
+	
+	.button-row .flyer-button:last-child {
+		margin-right: 0;
+	}
+</style>

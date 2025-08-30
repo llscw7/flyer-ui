@@ -1,0 +1,193 @@
+<template>
+  <view v-if="shouldShow" class="flyer-dialog-overlay" :style="overlayStyle" @click="handleOverlayClick">
+    <view class="flyer-dialog-modal" @click.stop="">
+      <!-- 标题区域 -->
+      <view v-if="state.title" class="flyer-dialog-header">
+        <text class="flyer-dialog-title">{{ state.title }}</text>
+      </view>
+
+      <!-- 内容区域 -->
+      <view class="flyer-dialog-body">
+        <text class="flyer-dialog-content">{{ state.content }}</text>
+      </view>
+
+      <!-- 按钮区域 -->
+      <view class="flyer-dialog-footer">
+        <view v-if="state.showCancel" class="flyer-dialog-btn flyer-dialog-btn--cancel" @click="handleCancel">
+          <text class="flyer-dialog-btn-text flyer-dialog-btn-text--cancel">{{ state.cancelText }}</text>
+        </view>
+        <view class="flyer-dialog-btn flyer-dialog-btn--confirm" @click="handleConfirm">
+          <text class="flyer-dialog-btn-text flyer-dialog-btn-text--confirm">{{ state.confirmText }}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script setup lang="uts">
+import { computed } from 'vue'
+import { state, mutations } from './store.uts'
+
+// 定义组件选项
+defineOptions({
+  name: 'FlyerDialog'
+})
+
+// 定义 props
+const props = defineProps<{
+  id?: string
+}>()
+
+// 计算是否应该显示对话框
+const shouldShow = computed(() => {
+  // 如果没有设置 targetId，则兼容旧逻辑（所有组件都显示）
+  if (state.targetId == null) {
+    return state.visible
+  }
+  // 只有当 targetId 匹配当前组件 id 时才显示
+  return state.visible && state.targetId == props.id
+})
+
+// 计算遮罩样式
+const overlayStyle = computed(() => {
+  return {
+    zIndex: state.zIndex.toString()
+  }
+})
+
+// 事件处理函数
+function handleOverlayClick() {
+  if (state.maskClosable) {
+    handleCancel()
+  }
+}
+
+function handleConfirm() {
+    console.log('确认按钮被点击')
+  mutations.confirm()
+}
+
+function handleCancel() {
+    console.log('取消按钮被点击')
+  mutations.cancel()
+}
+</script>
+
+<style>
+.flyer-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.flyer-dialog-modal {
+  background-color: #ffffff;
+  border-radius: 12px;
+  width: 280px;
+  max-width: 90%;
+  overflow: hidden;
+}
+
+/* 头部样式 */
+.flyer-dialog-header {
+  padding: 24px 24px 16px 24px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: #f0f0f0;
+}
+
+.flyer-dialog-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333333;
+  text-align: center;
+  line-height: 24px;
+}
+
+/* 内容区域样式 */
+.flyer-dialog-body {
+  padding: 24px;
+  min-height: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.flyer-dialog-content {
+  font-size: 16px;
+  color: #666666;
+  line-height: 24px;
+  text-align: center;
+}
+
+/* 按钮区域样式 */
+.flyer-dialog-footer {
+  flex-direction: row;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: #f0f0f0;
+}
+
+.flyer-dialog-btn {
+  flex: 1;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  transition-property: background-color;
+  transition-duration: 0.2s;
+}
+
+.flyer-dialog-btn--cancel {
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-right-color: #f0f0f0;
+}
+
+.flyer-dialog-btn:active {
+  background-color: #f5f5f5;
+}
+
+.flyer-dialog-btn-text {
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.flyer-dialog-btn-text--cancel {
+  color: #999999;
+}
+
+.flyer-dialog-btn-text--confirm {
+  color: #007aff;
+  font-weight: 500;
+}
+
+/* 单按钮样式调整 */
+.flyer-dialog-footer:has(.flyer-dialog-btn:only-child) .flyer-dialog-btn {
+  border-right-width: 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+  .flyer-dialog-modal {
+    width: 260px;
+  }
+  
+  .flyer-dialog-title {
+    font-size: 16px;
+  }
+  
+  .flyer-dialog-content {
+    font-size: 14px;
+  }
+  
+  .flyer-dialog-btn-text {
+    font-size: 14px;
+  }
+}
+</style>

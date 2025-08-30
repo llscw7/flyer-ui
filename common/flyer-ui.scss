@@ -1,0 +1,80 @@
+/**
+ * Flyer UI 通用样式变量
+ * 基于uni.scss扩展，专门为组件库设计
+ */
+
+/* 品牌色彩 */
+$flyer-color-primary: #007aff;
+$flyer-color-success: #4cd964;
+$flyer-color-warning: #f0ad4e;
+$flyer-color-danger: #dd524d;
+$flyer-color-info: #909399;
+
+/* 中性色 */
+$flyer-color-white: #ffffff;
+$flyer-color-black: #000000;
+$flyer-color-text-primary: #333333;
+$flyer-color-text-regular: #606266;
+$flyer-color-text-secondary: #909399;
+$flyer-color-text-placeholder: #c0c4cc;
+$flyer-color-text-disabled: #c0c4cc;
+
+/* 边框色 */
+$flyer-border-color-light: #ebeef5;
+$flyer-border-color-lighter: #f2f6fc;
+$flyer-border-color-extra-light: #fafafa;
+
+/* 背景色 */
+$flyer-bg-color: #ffffff;
+$flyer-bg-color-page: #f2f3f5;
+$flyer-bg-color-light: #fafafa;
+
+/* 按钮尺寸 */
+$flyer-button-large-height: 50px;
+$flyer-button-normal-height: 44px;
+$flyer-button-small-height: 36px;
+$flyer-button-mini-height: 28px;
+
+/* 圆角 */
+$flyer-border-radius-small: 2px;
+$flyer-border-radius-base: 4px;
+$flyer-border-radius-large: 8px;
+$flyer-border-radius-round: 20px;
+
+/* 间距 */
+$flyer-spacing-mini: 4px;
+$flyer-spacing-small: 8px;
+$flyer-spacing-base: 12px;
+$flyer-spacing-large: 16px;
+$flyer-spacing-xl: 24px;
+$flyer-spacing-xxl: 32px;
+
+/* 字体大小 */
+$flyer-font-size-xs: 10px;
+$flyer-font-size-sm: 12px;
+$flyer-font-size-base: 14px;
+$flyer-font-size-lg: 16px;
+$flyer-font-size-xl: 18px;
+$flyer-font-size-xxl: 20px;
+
+/* 行高 */
+$flyer-line-height-xs: 16px;
+$flyer-line-height-sm: 18px;
+$flyer-line-height-base: 20px;
+$flyer-line-height-lg: 24px;
+$flyer-line-height-xl: 26px;
+$flyer-line-height-xxl: 28px;
+
+/* 阴影 */
+$flyer-box-shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+$flyer-box-shadow-base: 0 2px 8px rgba(0, 0, 0, 0.15);
+$flyer-box-shadow-dark: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+/* 过渡动画 */
+$flyer-transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+$flyer-transition-fade: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+/* 层级 */
+$flyer-z-index-normal: 1;
+$flyer-z-index-top: 1000;
+$flyer-z-index-popper: 2000;
