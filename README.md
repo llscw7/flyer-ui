@@ -53,12 +53,14 @@ export default {
 
 - [x] **Button 按钮** - 按钮用于触发一个操作
 - [x] **Icon 图标** - 语义化的矢量图形，支持内置uni-icon和自定义iconfont
+- [x] **Dialog 对话框** - 模态对话框，在浮层中显示，引导用户进行相关操作
 - [ ] **Input 输入框** - 通过鼠标或键盘输入字符  
 - [ ] **Card 卡片** - 将信息聚合在卡片容器中显示
 - [ ] **Loading 加载** - 加载过程中的过渡状态
 
 ### 反馈组件
 
+- [x] **Dialog 对话框** - 全局状态管理的模态对话框组件
 - [ ] **Toast 轻提示** - 一种轻量级反馈组件
 - [ ] **Modal 弹窗** - 模态对话框
 - [ ] **ActionSheet 操作菜单** - 底部弹起的操作菜单
@@ -107,6 +109,8 @@ flyer-ui/
 - **[⚡ 快速参考](.github/QUICK_REFERENCE.md)** - UTS 语法速查卡片
 - **[🔧 项目配置](.github/PROJECT_CONFIG.md)** - 环境配置和最佳实践
 - **[🚀 Copilot 工作流程](.github/COPILOT_WORKFLOW.md)** - Copilot 协作开发指南
+- **[🏪 Store 组件开发指南](.github/STORE_COMPONENT_GUIDE.md)** - 全局状态管理组件开发
+- **[📋 Store 组件快速参考](.github/STORE_COMPONENT_QUICK_REF.md)** - Store 组件快速创建模板
 
 ### 组件开发规范
 

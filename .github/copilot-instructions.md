@@ -125,6 +125,52 @@ let value: string | null = null                // null instead of undefined
 **Component usage patterns** from existing components:
 - `flyer-button`: `type="primary|success|warning|danger"`, `size="large|normal|small"`
 - `flyer-icon`: `name="uni-icon-name"` or `font-family="iconfont"`
+- `flyer-dialog`: Global store management with `mutations.show()`, `mutations.alert()`, `mutations.showConfirm()`
+
+## 🏪 Store Component Pattern
+
+**For components with global state** (modals, overlays, notifications):
+
+```uts
+// store.uts
+import { reactive } from 'vue'
+
+export type State = {
+  visible: boolean
+  targetId: string | null
+  resolvePromise: ((value: any) => void) | null
+}
+
+export const state = reactive({
+  visible: false,
+  targetId: null,
+  resolvePromise: null
+} as State)
+
+export const mutations = {
+  show(config?: { id?: string }): Promise<any> {
+    state.visible = true
+    state.targetId = config?.id || null
+    return new Promise((resolve) => {
+      state.resolvePromise = resolve
+    })
+  }
+}
+```
+
+**Component template**:
+```vue
+<script setup lang="uts">
+import { computed } from 'vue'
+import { state, mutations } from './store.uts'
+
+const shouldShow = computed(() => {
+  return state.targetId == null ? 
+    state.visible : 
+    state.visible && state.targetId == props.id
+})
+</script>
+```
 
 ## 📚 Key Reference Files
 

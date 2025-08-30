@@ -7,7 +7,7 @@
       </view>
 
       <!-- 内容区域 -->
-      <view class="flyer-dialog-body">
+      <view class="flyer-dialog-body" :class="{ 'has-title': state.title }">
         <text class="flyer-dialog-content">{{ state.content }}</text>
       </view>
 
@@ -80,50 +80,68 @@ function handleCancel() {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px;
+  padding: 0;
 }
 
 .flyer-dialog-modal {
   background-color: #ffffff;
-  border-radius: 12px;
-  width: 280px;
-  max-width: 90%;
+  border-radius: 16px;
+  width: 80%;
+  max-width: 320px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition-property: all;
+  transition-duration: 0.3s;
+  font-size: 16px;
 }
 
 /* 头部样式 */
 .flyer-dialog-header {
-  padding: 24px 24px 16px 24px;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: #f0f0f0;
+  padding-top: 26px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 0;
 }
 
 .flyer-dialog-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-  color: #333333;
+  color: #323233;
   text-align: center;
   line-height: 24px;
 }
 
 /* 内容区域样式 */
 .flyer-dialog-body {
-  padding: 24px;
-  min-height: 60px;
+  padding: 26px 24px;
+  min-height: auto;
   align-items: center;
   justify-content: center;
+  flex: 1;
+  max-height: 60vh;
+  overflow-y: auto;
 }
 
 .flyer-dialog-content {
-  font-size: 16px;
-  color: #666666;
-  line-height: 24px;
+  font-size: 14px;
+  color: #323233;
+  line-height: 20px;
   text-align: center;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* 当有标题时，调整内容区域样式 */
+.flyer-dialog-body.has-title {
+  padding-top: 8px;
+}
+
+.flyer-dialog-body.has-title .flyer-dialog-content {
+  color: #646566;
 }
 
 /* 按钮区域样式 */
@@ -131,14 +149,16 @@ function handleCancel() {
   flex-direction: row;
   border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: #f0f0f0;
+  border-top-color: #ebedf0;
+  overflow: hidden;
 }
 
 .flyer-dialog-btn {
   flex: 1;
-  height: 50px;
+  height: 48px;
   align-items: center;
   justify-content: center;
+  background-color: transparent;
   transition-property: background-color;
   transition-duration: 0.2s;
 }
@@ -146,48 +166,52 @@ function handleCancel() {
 .flyer-dialog-btn--cancel {
   border-right-width: 1px;
   border-right-style: solid;
-  border-right-color: #f0f0f0;
+  border-right-color: #ebedf0;
 }
 
 .flyer-dialog-btn:active {
+  opacity: 0.8;
+}
+
+.flyer-dialog-btn--cancel:active {
   background-color: #f5f5f5;
 }
 
+.flyer-dialog-btn--confirm:active {
+  background-color: #f0fff4;
+}
+
 .flyer-dialog-btn-text {
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 20px;
 }
 
 .flyer-dialog-btn-text--cancel {
-  color: #999999;
+  color: #646566;
 }
 
 .flyer-dialog-btn-text--confirm {
-  color: #007aff;
-  font-weight: 500;
-}
-
-/* 单按钮样式调整 */
-.flyer-dialog-footer:has(.flyer-dialog-btn:only-child) .flyer-dialog-btn {
-  border-right-width: 0;
+  color: #1989fa;
+  font-weight: normal;
 }
 
 /* 响应式调整 */
 @media (max-width: 375px) {
   .flyer-dialog-modal {
-    width: 260px;
+    width: 85%;
+    max-width: 300px;
   }
   
   .flyer-dialog-title {
-    font-size: 16px;
+    font-size: 15px;
   }
   
   .flyer-dialog-content {
-    font-size: 14px;
+    font-size: 13px;
   }
   
   .flyer-dialog-btn-text {
-    font-size: 14px;
+    font-size: 13px;
   }
 }
 </style>

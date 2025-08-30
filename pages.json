@@ -41,7 +41,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "Flyer UI",
 		"navigationBarBackgroundColor": "#ffffff",
-		"backgroundColor": "#f2f3f5"
+		"backgroundColor": "#f2f3f5",
+		"navigationStyle": "custom"
 	},
 	"easycom": {
 		"autoscan": true,
