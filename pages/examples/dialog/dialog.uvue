@@ -5,7 +5,7 @@
     <view class="page">
       <!-- 页面标题 -->
       <view class="header">
-        <text class="title">Dialog 对话框</text>
+        <text class="title">Dialog 对话</text>
         <text class="subtitle">模态对话框，在浮层中显示，引导用户进行相关操作</text>
       </view>
 
@@ -14,19 +14,19 @@
         <text class="section-title">基础用法</text>
         
         <view class="button-group">
-          <flyer-button type="primary" text="Alert 提示框" @click="showAlert" />
-          <flyer-button type="success" text="Confirm 确认框" @click="showConfirm" />
+          <flyer-button type="primary" text="Alert 提示" @click="showAlert2" />
+          <flyer-button type="success" text="Confirm 确认" @click="showConfirm2" />
         </view>
       </view>
 
       <!-- 自定义内容 -->
       <view class="section">
-        <text class="section-title">自定义配置</text>
-        
+        <text class="section-title">自定义内容</text>
+
         <view class="button-group">
-          <flyer-button type="warning" text="自定义标题" @click="showCustomTitle" />
+          <flyer-button type="warning" text="自定义标" @click="showCustomTitle" />
           <flyer-button type="danger" text="禁止遮罩关闭" @click="showNoMaskClose" />
-          <flyer-button type="info" text="自定义按钮文字" @click="showCustomButtons" />
+          <flyer-button type="info" text="自定义按钮文" @click="showCustomButtons" />
         </view>
       </view>
 
@@ -41,8 +41,8 @@
       </view>
 
       <!-- 结果显示 -->
-      <view v-if="lastResult" class="result-section">
-        <text class="result-title">操作结果：</text>
+      <view v-if="lastResult != null && lastResult != ''" class="result-section">
+        <text class="result-title">操作结果</text>
         <text class="result-text">{{ lastResult }}</text>
       </view>
     </view>
@@ -56,17 +56,15 @@
 
 <script setup lang="uts">
 import { ref } from 'vue'
-import { mutations as dialogMutations } from '@/components/flyer-dialog/store.uts'
+import { state, showConfirm, showAlert, show } from '../../../components/flyer-dialog/store.uts'
 
 // 定义组件选项
 defineOptions({
   name: 'DialogExample'
 })
 
-// 响应式数据
 const lastResult = ref('')
 
-// 显示结果的辅助函数
 function setResult(result: string) {
   lastResult.value = result
   setTimeout(() => {
@@ -75,9 +73,9 @@ function setResult(result: string) {
 }
 
 // Alert 示例
-async function showAlert() {
+async function showAlert2() {
   try {
-    await dialogMutations.alert('这是一个提示消息')
+    await showAlert('这是一个提示消')
     setResult('Alert 确定')
   } catch (error) {
     setResult('Alert 关闭')
@@ -85,34 +83,34 @@ async function showAlert() {
 }
 
 // Confirm 示例
-async function showConfirm() {
+async function showConfirm2() {
   try {
-    const result = await dialogMutations.showConfirm('确定要执行这个操作吗？')
+    const result = await showConfirm('确定要执行这个操作吗', '')
     setResult(result ? 'Confirm 确定' : 'Confirm 取消')
   } catch (error) {
     setResult('Confirm 关闭')
   }
 }
 
-// 自定义标题示例
+// 自定义标题示�?
 async function showCustomTitle() {
-  try {
-    const result = await dialogMutations.show({
-      title: '重要提醒',
-      content: '这是一个带有自定义标题的对话框',
-      confirmText: '知道了',
-      showCancel: false
-    })
-    setResult('自定义标题 - 确定')
-  } catch (error) {
-    setResult('自定义标题 - 关闭')
-  }
+  // try {
+  //   const result = await dialogMutations.show({
+  //     title: '重要提醒',
+  //     content: '这是一个带有自定义标题的对话框',
+  //     confirmText: '知道了',
+  //     showCancel: false
+  //   })
+  //   setResult('自定义标题 - 确定')
+  // } catch (error) {
+  //   setResult('自定义标题 - 关闭')
+  // }
 }
 
 // 禁止遮罩关闭示例
 async function showNoMaskClose() {
   try {
-    const result = await dialogMutations.show({
+    const result = await show({
       title: '重要操作',
       content: '点击遮罩无法关闭此对话框，必须选择一个选项',
       maskClosable: false,
@@ -125,10 +123,10 @@ async function showNoMaskClose() {
   }
 }
 
-// 自定义按钮示例
+// 自定义按钮示�?
 async function showCustomButtons() {
   try {
-    const result = await dialogMutations.show({
+    const result = await show({
       title: '选择操作',
       content: '请选择你想要执行的操作',
       confirmText: '立即执行',
@@ -143,16 +141,16 @@ async function showCustomButtons() {
 // 删除确认示例
 async function showDeleteConfirm() {
   try {
-    const result = await dialogMutations.show({
+    const result = await show({
       title: '删除确认',
-      content: '确定要删除这个项目吗？删除后不可恢复！',
+      content: '确定要删除这个项目吗？删除后不可恢复',
       confirmText: '删除',
       cancelText: '取消'
     })
     
     if (result) {
       // 模拟删除操作
-      setResult('删除成功！')
+      setResult('删除成功')
     } else {
       setResult('取消删除')
     }
@@ -164,7 +162,7 @@ async function showDeleteConfirm() {
 // 保存提示示例
 async function showSaveAlert() {
   try {
-    await dialogMutations.alert('保存成功！', '操作成功')
+    await showAlert('保存成功', '操作成功')
     setResult('保存确认完成')
   } catch (error) {
     setResult('保存提示 - 关闭')
@@ -178,7 +176,6 @@ async function showSaveAlert() {
 }
 
 .page {
-  min-height: 100vh;
   background-color: #f2f3f5;
   padding: 0 20px;
 }
@@ -192,7 +189,7 @@ async function showSaveAlert() {
 
 .title {
   font-size: 24px;
-  font-weight: bold;
+  font-weight: 700;
   color: #333333;
   margin-bottom: 8px;
 }
@@ -210,16 +207,23 @@ async function showSaveAlert() {
 
 .section-title {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 400;
   color: #333333;
   margin-bottom: 16px;
   margin-left: 4px;
 }
 
-/* 按钮组 */
+/* 按钮�?*/
 .button-group {
   flex-direction: column;
-  gap: 12px;
+}
+
+.button-group > * {
+  margin-bottom: 12px;
+}
+
+.button-group > *:last-child {
+  margin-bottom: 0;
 }
 
 /* 结果显示 */
@@ -236,7 +240,7 @@ async function showSaveAlert() {
 
 .result-title {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 400;
   color: #52c41a;
   margin-bottom: 8px;
 }

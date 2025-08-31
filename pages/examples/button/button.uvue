@@ -6,7 +6,7 @@
 			<!-- 页面标题 -->
 			<view class="demo-header">
 				<text class="demo-title">Button 按钮</text>
-				<text class="demo-desc">按钮用于触发一个操作，如提交表单。</text>
+				<text class="demo-desc">按钮用于触发一个操作，如提交表单</text>
 			</view>
 
 			<!-- 基础用法 -->
@@ -43,9 +43,9 @@
 				</view>
 			</view>
 
-			<!-- 禁用状态 -->
+			<!-- 禁用状�?-->
 			<view class="demo-section">
-				<text class="demo-section-title">禁用状态</text>
+				<text class="demo-section-title">禁用状</text>
 				<view class="demo-content">
 					<view class="button-row">
 						<flyer-button disabled text="禁用按钮"></flyer-button>
@@ -63,7 +63,7 @@
 				<text class="demo-section-title">加载状态</text>
 				<view class="demo-content">
 					<view class="button-row">
-						<flyer-button loading text="加载中" @click="handleLoading"></flyer-button>
+						<flyer-button loading text="加载状态" @click="handleLoading"></flyer-button>
 						<flyer-button :loading="isLoading" type="primary" text="点击加载" @click="handleLoading"></flyer-button>
 					</view>
 				</view>
@@ -107,7 +107,7 @@
 				<view class="demo-content">
 					<view class="button-row">
 						<flyer-button icon="🔍" text="搜索" @click="handleClick('搜索')"></flyer-button>
-						<flyer-button type="primary" icon="📁" text="文件夹" @click="handleClick('文件夹')"></flyer-button>
+						<flyer-button type="primary" icon="📁" text="文件" @click="handleClick('文件')"></flyer-button>
 					</view>
 				</view>
 			</view>
@@ -118,13 +118,13 @@
 </template>
 
 <script setup lang="uts">
-	// 响应式数据
+	// 响应式数�?
 	const isLoading = ref<boolean>(false)
 
 	// 点击处理方法
 	const handleClick = (type: string) => {
 		uni.showToast({
-			title: `点击了${type}`,
+			title: `点击${type}`,
 			icon: 'none',
 			duration: 1500
 		})
@@ -160,7 +160,7 @@
 	
 	.demo-title {
 		font-size: 24px;
-		font-weight: bold;
+		font-weight: 700;
 		color: #333333;
 		margin-bottom: 8px;
 	}
@@ -180,7 +180,7 @@
 	
 	.demo-section-title {
 		font-size: 16px;
-		font-weight: bold;
+		font-weight: 700;
 		color: #333333;
 		margin-bottom: 16px;
 	}

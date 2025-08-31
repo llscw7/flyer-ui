@@ -6,7 +6,7 @@
 			<!-- 页面标题 -->
 			<view class="demo-header">
 				<text class="demo-title">Icon 图标</text>
-				<text class="demo-desc">语义化的矢量图形，支持内置uni-icon和自定义iconfont。</text>
+				<text class="demo-desc">语义化的矢量图形，支持内置uni-icon和自定义iconfont</text>
 			</view>
 
 			<!-- 内置uni-icon图标 -->
@@ -72,9 +72,9 @@
 				</view>
 			</view>
 
-			<!-- 可点击图标 -->
+			<!-- 可点击图'-->
 			<view class="demo-section">
-				<text class="demo-section-title">可点击图标</text>
+				<text class="demo-section-title">可点击图</text>
 				<view class="demo-content">
 					<view class="clickable-demo">
 						<flyer-icon 
@@ -84,7 +84,7 @@
 							:clickable="true"
 							@click="toggleFavorite"
 						></flyer-icon>
-						<text class="click-tip">点击切换收藏状态</text>
+						<text class="click-tip">点击切换收藏状</text>
 					</view>
 				</view>
 			</view>
@@ -103,12 +103,12 @@
 				</view>
 			</view>
 
-			<!-- 自定义字体（示例说明） -->
+			<!-- 自定义字体（示例说明'-->
 			<view class="demo-section">
-				<text class="demo-section-title">自定义 iconfont</text>
+				<text class="demo-section-title">自定'iconfont</text>
 				<text class="demo-section-desc">项目内置的自定义字体图标，包含丰富的金融、生活服务类图标</text>
 				<view class="demo-content">
-					<!-- 金融理财类 -->
+					<!-- 金融理财'-->
 					<view class="iconfont-category">
 						<text class="category-title">金融理财</text>
 						<view class="icon-grid">
@@ -124,7 +124,7 @@
 						</view>
 					</view>
 
-					<!-- 生活服务类 -->
+					<!-- 生活服务'-->
 					<view class="iconfont-category">
 						<text class="category-title">生活服务</text>
 						<view class="icon-grid">
@@ -140,7 +140,7 @@
 						</view>
 					</view>
 
-					<!-- 常用功能类 -->
+					<!-- 常用功能'-->
 					<view class="iconfont-category">
 						<text class="category-title">常用功能</text>
 						<view class="icon-grid">
@@ -181,7 +181,7 @@
 		label?: string
 	}
 
-	// 响应式数据
+	// 响应式数'
 	const isFavorite = ref<boolean>(false)
 
 	// uni-icon 图标数据
@@ -199,7 +199,7 @@
 		{ name: 'info-circle', desc: '信息圆圈' },
 		{ name: 'success', desc: '成功' },
 		{ name: 'success-circle', desc: '成功圆圈' },
-		{ name: 'success-no-circle', desc: '成功无圆圈' },
+		{ name: 'success-no-circle', desc: '成功无圆' },
 		{ name: 'cancel-circle', desc: '取消圆圈' },
 		{ name: 'warn', desc: '警告' },
 		{ name: 'clear', desc: '清除' },
@@ -211,9 +211,9 @@
 	// 金融图标数据
 	const financeIcons = ref<IconData[]>([
 		{ name: 'caipiao', label: '彩票' },
-		{ name: 'huiyuanqia', label: '会员卡' },
-		{ name: 'shuzirenminbi', label: '数字人民币' },
-		{ name: 'bitebi', label: '比特币' },
+		{ name: 'huiyuanqia', label: '会员' },
+		{ name: 'shuzirenminbi', label: '数字人民' },
+		{ name: 'bitebi', label: '比特' },
 		{ name: 'jijin', label: '基金' },
 		{ name: 'yanglaojin', label: '养老金' },
 		{ name: 'xinyongdaikuan', label: '信用贷款' },
@@ -221,7 +221,7 @@
 		{ name: 'qihuo', label: '期货' },
 		{ name: 'dingqicunkuan', label: '定期存款' },
 		{ name: 'huangjin', label: '黄金' },
-		{ name: 'gongjijin', label: '公积金' },
+		{ name: 'gongjijin', label: '公积' },
 		{ name: 'gupiao', label: '股票' },
 		{ name: 'yingshou', label: '应收' },
 		{ name: 'yingfu', label: '应付' },
@@ -231,8 +231,8 @@
 	// 生活服务图标数据
 	const lifeIcons = ref<IconData[]>([
 		{ name: 'fanqia', label: '饭卡' },
-		{ name: 'gas-station-fill', label: '加油站' },
-		{ name: 'yibaoka', label: '医保卡' },
+		{ name: 'gas-station-fill', label: '加油' },
+		{ name: 'yibaoka', label: '医保' },
 		{ name: 'zhufangzujin', label: '住房租金' },
 		{ name: 'deposit', label: '退押金' },
 		{ name: 'hospital', label: '医院' },
@@ -247,7 +247,7 @@
 	// 常用功能图标数据
 	const commonIcons = ref<IconData[]>([
 		{ name: 'cash', label: '现金' },
-		{ name: 'coupon', label: '优惠券' },
+		{ name: 'coupon', label: '优惠' },
 		{ name: 'exchange', label: '兑换' },
 		{ name: 'calendar', label: '日历' },
 		{ name: 'piechart', label: '饼图' },
@@ -256,7 +256,7 @@
 		{ name: 'thumbdown-line', label: '点踩' },
 		{ name: 'star-line', label: '星星' },
 		{ name: 'search-line', label: '搜索' },
-		{ name: 'shopping-cart', label: '购物车' },
+		{ name: 'shopping-cart', label: '购物' },
 		{ name: 'gift', label: '礼品' },
 		{ name: 'heart', label: '爱心' },
 		{ name: 'run', label: '跑步' },
@@ -267,7 +267,7 @@
 	// 图标点击事件处理
 	const handleIconClick = (iconName: string) => {
 		uni.showToast({
-			title: `点击了 ${iconName} 图标`,
+			title: `点击'${iconName} 图标`,
 			icon: 'none',
 			duration: 1500
 		})
@@ -277,7 +277,7 @@
 	const toggleFavorite = () => {
 		isFavorite.value = !isFavorite.value
 		uni.showToast({
-			title: isFavorite.value ? '已收藏' : '取消收藏',
+			title: isFavorite.value ? '已收' : '取消收藏',
 			icon: 'none',
 			duration: 1000
 		})
@@ -300,7 +300,7 @@
 	
 	.demo-title {
 		font-size: 24px;
-		font-weight: bold;
+		font-weight: 700;
 		color: #333333;
 		margin-bottom: 8px;
 	}
@@ -320,7 +320,7 @@
 	
 	.demo-section-title {
 		font-size: 16px;
-		font-weight: bold;
+		font-weight: 700;
 		color: #333333;
 		margin-bottom: 8px;
 	}
@@ -385,7 +385,7 @@
 		padding: 20px 0;
 	}
 	
-	/* 可点击演示 */
+	/* 可点击演'*/
 	.clickable-demo {
 		align-items: center;
 		padding: 20px;
@@ -408,7 +408,7 @@
 		padding: 20px 0;
 	}
 	
-	/* 自定义字体演示 */
+	/* 自定义字体演'*/
 	.custom-font-demo {
 		padding: 16px;
 		background-color: #f8f9fa;
@@ -421,7 +421,7 @@
 	
 	.category-title {
 		font-size: 14px;
-		font-weight: bold;
+		font-weight: 700;
 		color: #333333;
 		margin-bottom: 12px;
 		padding-left: 8px;

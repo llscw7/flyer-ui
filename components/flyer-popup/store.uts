@@ -1,0 +1,154 @@
+/**
+ * Flyer Popup Store - 全局底部弹窗状态管理
+ * 基于 uni-app x UTS 语言实现
+ */
+import { reactive } from 'vue'
+
+// 弹窗配置接口
+type PopupConfig = {
+  background?: string
+  radius?: number
+  zIndex?: number
+  id?: string
+  maskClosable?: boolean
+  maskBackground?: string
+  safeArea?: boolean
+}
+
+// 定义 State 类型
+export type State = {
+  visible: boolean
+  background: string
+  radius: number
+  zIndex: number
+  targetId: string | null
+  maskClosable: boolean
+  maskBackground: string
+  safeArea: boolean
+  resolvePromise: ((value: boolean) => void) | null
+  rejectPromise: ((reason?: any) => void) | null
+}
+
+// 实例化为响应式 state
+export const state = reactive({
+  visible: false,
+  background: '#ffffff',
+  radius: 24,
+  zIndex: 996,
+  targetId: null,
+  maskClosable: true,
+  maskBackground: 'rgba(0, 0, 0, 0.6)',
+  safeArea: true,
+  resolvePromise: null,
+  rejectPromise: null
+} as State)
+
+// 状态管理方法类型
+type PopupMutations = {
+  show: (config?: PopupConfig) => Promise<boolean>
+  confirm: () => void
+  cancel: () => void
+  close: () => void
+  hide: () => void
+  reset: () => void
+}
+
+// 状态管理方法
+export const mutations: PopupMutations = {
+  // 显示底部弹窗
+  show(config?: PopupConfig): Promise<boolean> {
+    // 设置默认值和用户配置
+    state.background = config?.background != null ? config.background : '#ffffff'
+    state.radius = config?.radius != null ? config.radius : 24
+  state.zIndex = config?.zIndex != null ? config.zIndex : 996
+  state.targetId = config?.id != null ? config.id : null
+    state.maskClosable = config?.maskClosable != null ? config.maskClosable : true
+  state.maskBackground = config?.maskBackground != null ? config.maskBackground : 'rgba(0, 0, 0, 0.6)'
+    state.safeArea = config?.safeArea != null ? config.safeArea : true
+    
+    state.visible = true
+
+    return new Promise<boolean>((resolve, reject) => {
+      state.resolvePromise = resolve
+      state.rejectPromise = reject
+    })
+  },
+
+  // 确认操作
+  confirm() {
+    state.visible = false
+    const resolve = state.resolvePromise
+    resetState()
+    
+    if (resolve != null) {
+      resolve(true)
+    }
+  },
+
+  // 取消操作
+  cancel() {
+    state.visible = false
+    const resolve = state.resolvePromise
+    resetState()
+    
+    if (resolve != null) {
+      resolve(false)
+    }
+  },
+
+  // 关闭弹窗
+  close() {
+    state.visible = false
+    const reject = state.rejectPromise
+    resetState()
+    
+    if (reject != null) {
+      reject('closed')
+    }
+  },
+
+  // 隐藏弹窗
+  hide() {
+    state.visible = false
+    const resolve = state.resolvePromise
+    resetState()
+    
+    if (resolve != null) {
+      resolve(false)
+    }
+  },
+
+  // 重置状态
+  reset() {
+    resetState()
+  }
+}
+
+// 内部重置函数
+function resetState() {
+  state.targetId = null
+  state.resolvePromise = null
+  state.rejectPromise = null
+}
+
+// 便捷方法导出
+export const showPopup = (config?: PopupConfig): Promise<boolean> => {
+  return mutations.show(config)
+}
+
+export const hidePopup = () => {
+  mutations.hide()
+}
+
+export const closePopup = () => {
+  mutations.close()
+}
+
+
+export const cancelPopup = () => {
+  mutations.cancel()
+}
+
+export const confirmPopup = () => {
+  mutations.confirm()
+}

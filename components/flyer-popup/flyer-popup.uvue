@@ -1,0 +1,173 @@
+<template>
+  <view v-if="shouldShow" class="flyer-popup-overlay" :style="overlayStyle" @click="handleOverlayClick">
+    <!-- #ifdef APP -->
+    <view class="flyer-popup-border" :style="borderStyle" v-if="radius != null && radius > 0"></view>
+    <!-- #endif -->
+    <view 
+      class="flyer-popup-modal" 
+      :class="{ 'flyer-popup-show': state.visible, 'flyer-popup-safe-area': true }"
+      :style="modalStyle"
+    >
+      <slot></slot>
+    </view>
+  </view>
+</template>
+
+<script lang="uts" setup>
+import { ref, computed, onMounted } from 'vue'
+import { state, cancelPopup, confirmPopup } from './store.uts'
+
+// 定义组件选项
+defineOptions({
+  name: 'FlyerPopup'
+})
+
+// 定义 props
+const props = defineProps<{
+  id?: string,
+  background?: string,
+  radius?: number,
+  safeArea?: boolean,
+  maskBackground?: string
+}>()
+
+// 响应式数据
+const iphoneX = ref(false)
+
+// 计算是否应该显示弹窗
+const shouldShow = computed(() => {
+  if (state.targetId == null) {
+    return state.visible
+  }
+  return state.visible && state.targetId == props.id
+})
+
+// 计算遮罩样式
+const overlayStyle = computed(() => {
+  const maskBg = props.maskBackground != null ? props.maskBackground : state.maskBackground
+  return {
+    zIndex: state.zIndex.toString(),
+    backgroundColor: maskBg
+  }
+})
+
+// 计算边框样式（APP 平台）
+const borderStyle = computed(() => {
+  const radius = props.radius != null ? props.radius : state.radius
+  const background = props.background != null ? props.background : state.background
+  return {
+    height: radius + 'rpx',
+    backgroundColor: background
+  }
+})
+
+// 计算模态框样式
+const modalStyle = computed(() => {
+  const radius = props.radius != null ? props.radius : state.radius
+  const background = props.background != null ? props.background : state.background
+  
+  return {
+    borderTopLeftRadius: radius + 'rpx',
+    borderTopRightRadius: radius + 'rpx',
+    backgroundColor: background
+  }
+})
+
+// iPhone X 检测
+function isPhoneX(): boolean {
+  if (props.safeArea == false) return false
+  
+  try {
+    const res = uni.getSystemInfoSync()
+    let iphonex = false
+    const models = ['iphonex', 'iphonexr', 'iphonexsmax']
+    
+    for (let i = 11; i < 20; i++) {
+      models.push(`iphone${i}`)
+      models.push(`iphone${i}mini`)
+      models.push(`iphone${i}pro`)
+      models.push(`iphone${i}promax`)
+    }
+    
+    const modelStr = res.model?.replace(/\s/g, "")?.toLowerCase()
+    const model = modelStr != null ? modelStr : ""
+    const newModel = model.split('<')[0]
+    
+    if (model != "" && (models.includes(model) || models.includes(newModel))) {
+      iphonex = true
+    }
+    
+    // 检查安全区域
+    if (res.safeAreaInsets != null && res.safeAreaInsets.bottom > 0) {
+      iphonex = true
+    }
+    
+    return iphonex
+  } catch (error) {
+    return false
+  }
+}
+
+// 事件处理函数
+function handleOverlayClick() {
+  if (state.maskClosable) {
+   cancelPopup()
+  }
+}
+
+// 组件挂载时检测设备
+onMounted(() => {
+  iphoneX.value = isPhoneX()
+})
+</script>
+
+<style>
+.flyer-popup-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* #ifdef APP */
+.flyer-popup-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/* #endif */
+
+.flyer-popup-modal {
+  width: 100%;
+  background-color: #ffffff;
+  border-top-left-radius: 24rpx;
+  border-top-right-radius: 24rpx;
+  overflow: hidden;
+  min-height: 40rpx;
+  transform: translateY(100%);
+  transition-property: transform;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
+}
+
+.flyer-popup-show {
+  transform: translateY(0);
+}
+
+.flyer-popup-safe-area {
+  padding-bottom: 34px;
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+  .flyer-popup-modal {
+    min-height: 32rpx;
+  }
+}
+</style>

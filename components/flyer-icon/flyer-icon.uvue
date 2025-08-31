@@ -13,6 +13,8 @@
 </template>
 
 <script setup lang="uts">
+	import { computed } from 'vue'
+	
 	// uni-app x 内置图标映射表
 	const UNI_ICONS: UTSJSONObject = {
 		'forward': '\uE600',
@@ -115,50 +117,43 @@
 	})
 
 	// 定义 Props
-	const props = defineProps({
+	const props = withDefaults(defineProps<{
 		// 图标名称或Unicode字符
-		name: {
-			type: String,
-			default: ''
-		},
+		name?: string,
 		// 图标大小
-		size: {
-			type: [String, Number],
-			default: 16
-		},
+		size?: string | number,
 		// 图标颜色
-		color: {
-			type: String,
-			default: '#333333'
-		},
+		color?: string,
 		// 字体族名称：uni-icon | iconfont | 自定义
-		fontFamily: {
-			type: String,
-			default: 'uni-icon'
-		},
+		fontFamily?: string,
 		// 是否可点击
-		clickable: {
-			type: Boolean,
-			default: false
-		},
+		clickable?: boolean,
 		// 自定义类名
-		customClass: {
-			type: String,
-			default: ''
-		},
+		customClass?: string,
 		// 自定义样式
-		customStyle: {
-			type: Object,
-			default: () => {
-				return {}
-			}
-		}
+		customStyle?: UTSJSONObject
+	}>(), {
+		name: '',
+		size: 16,
+		color: '#333333',
+		fontFamily: 'uni-icon',
+		clickable: false,
+		customClass: '',
+		customStyle: () => ({} as UTSJSONObject)
 	})
 
 	// 定义 Emits
 	const emit = defineEmits<{
 		(e: 'click', event: any): void
 	}>()
+
+	// 获取尺寸值
+	const getSizeValue = (): string => {
+		if (typeof props.size == 'number') {
+			return props.size + 'px'
+		}
+		return props.size as string
+	}
 
 	// 计算属性 - 图标文本
 	const iconText = computed<string>(() => {
@@ -188,19 +183,14 @@
 		
 		// 合并自定义样式
 		if (props.customStyle != null) {
-			Object.assign(style, props.customStyle)
+			const customStyle = props.customStyle as UTSJSONObject
+			for (let key in customStyle) {
+				style[key] = customStyle[key]
+			}
 		}
 		
 		return style
 	})
-
-	// 获取尺寸值
-	const getSizeValue = (): string => {
-		if (typeof props.size == 'number') {
-			return props.size + 'px'
-		}
-		return props.size as string
-	}
 
 	// 点击事件处理
 	const handleClick = (event: any) => {
@@ -212,26 +202,17 @@
 
 <style>
 	.flyer-icon {
-		display: inline-block;
-		font-style: normal;
-		font-weight: normal;
+		display: flex;
 		line-height: 1;
 		text-align: center;
-		vertical-align: baseline;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
 	}
 	
 	.flyer-icon--clickable {
-		cursor: pointer;
 	}
 	
 	/* 自定义iconfont样式 */
 	@font-face {
 		font-family: 'iconfont';
 		src: url('/static/iconfont/iconfont.ttf') format('truetype');
-		font-weight: normal;
-		font-style: normal;
-		font-display: swap;
 	}
 </style>

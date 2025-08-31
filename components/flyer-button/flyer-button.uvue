@@ -2,32 +2,31 @@
 	<view 
 		class="flyer-button"
 		:class="[
-			`flyer-button--${type}`, 
-			`flyer-button--${size}`,
+			`flyer-button--${buttonType}`, 
+			`flyer-button--${buttonSize}`,
 			{
-				'flyer-button--disabled': disabled,
-				'flyer-button--loading': loading,
-				'flyer-button--plain': plain,
-				'flyer-button--round': round,
-				'flyer-button--block': block
+				'flyer-button--disabled': isDisabled,
+				'flyer-button--loading': isLoading,
+				'flyer-button--plain': isPlain,
+				'flyer-button--round': isRound,
+				'flyer-button--block': isBlock
 			}
 		]"
-		:style="customStyle"
-		@click="handleClick"
+		:style="buttonStyle"
 	>
 		<!-- 加载状态 -->
-		<view v-if="loading" class="flyer-button__loading">
+		<view v-if="isLoading" class="flyer-button__loading">
 			<text class="flyer-button__loading-icon">●</text>
 		</view>
 		
 		<!-- 图标 -->
-		<view v-if="icon && !loading" class="flyer-button__icon">
-			<text class="flyer-button__icon-text">{{ icon }}</text>
+		<view v-if="buttonIcon != null && buttonIcon != '' && !isLoading" class="flyer-button__icon">
+			<text class="flyer-button__icon-text">{{ buttonIcon }}</text>
 		</view>
 		
 		<!-- 按钮文字 -->
-		<text v-if="$slots.default || text" class="flyer-button__text">
-			<slot>{{ text }}</slot>
+		<text v-if="buttonText != null && buttonText != ''" class="flyer-button__text">
+			<slot>{{ buttonText }}</slot>
 		</text>
 	</view>
 </template>
@@ -39,73 +38,52 @@
 	})
 
 	// 定义 Props
-	const props = defineProps({
+	const props = withDefaults(defineProps<{
 		// 按钮类型：primary | success | warning | danger | info | default
-		type: {
-			type: String,
-			default: 'default'
-		},
+		type?: string,
 		// 按钮尺寸：large | normal | small | mini
-		size: {
-			type: String,
-			default: 'normal'
-		},
+		size?: string,
 		// 按钮文字
-		text: {
-			type: String,
-			default: ''
-		},
+		text?: string,
 		// 是否禁用
-		disabled: {
-			type: Boolean,
-			default: false
-		},
+		disabled?: boolean,
 		// 是否加载中
-		loading: {
-			type: Boolean,
-			default: false
-		},
+		loading?: boolean,
 		// 是否朴素按钮
-		plain: {
-			type: Boolean,
-			default: false
-		},
+		plain?: boolean,
 		// 是否圆角按钮
-		round: {
-			type: Boolean,
-			default: false
-		},
+		round?: boolean,
 		// 是否块级按钮
-		block: {
-			type: Boolean,
-			default: false
-		},
+		block?: boolean,
 		// 图标
-		icon: {
-			type: String,
-			default: ''
-		},
+		icon?: string,
 		// 自定义样式
-		customStyle: {
-			type: Object,
-			default: () => {
-				return {}
-			}
-		}
+		customStyle?: UTSJSONObject
+	}>(), {
+		type: 'default',
+		size: 'normal',
+		text: '',
+		disabled: false,
+		loading: false,
+		plain: false,
+		round: false,
+		block: false,
+		icon: '',
+		customStyle: () => ({} as UTSJSONObject)
 	})
 
-	// 定义 Emits
-	const emit = defineEmits<{
-		(e: 'click', event: any): void
-	}>()
+	// 计算属性 - 处理默认值
+	const buttonType : string = props.type != null ? props.type : 'default'
+	const buttonSize : string = props.size != null ? props.size : 'normal'
+	const buttonText : string = props.text != null ? props.text : ''
+	const buttonIcon : string = props.icon != null ? props.icon : ''
+	const isDisabled : boolean = props.disabled != null ? props.disabled : false
+	const isLoading : boolean = props.loading != null ? props.loading : false
+	const isPlain : boolean = props.plain != null ? props.plain : false
+	const isRound : boolean = props.round != null ? props.round : false
+	const isBlock : boolean = props.block != null ? props.block : false
+	const buttonStyle : UTSJSONObject = props.customStyle != null ? props.customStyle : ({} as UTSJSONObject)
 
-	// 方法
-	const handleClick = (event: any) => {
-		if (props.disabled || props.loading) {
-			return
-		}
-		emit('click', event)
-	}
 </script>
 
 <style>
@@ -122,9 +100,7 @@
 		font-size: 14px;
 		line-height: 20px;
 		text-align: center;
-		cursor: pointer;
 		transition: all 0.3s;
-		user-select: none;
 		white-space: nowrap;
 		overflow: hidden;
 	}
@@ -236,13 +212,11 @@
 	/* 禁用状态 */
 	.flyer-button--disabled {
 		opacity: 0.5;
-		cursor: not-allowed;
 	}
 	
 	/* 加载状态 */
 	.flyer-button--loading {
 		opacity: 0.8;
-		cursor: not-allowed;
 	}
 	
 	.flyer-button__loading {
@@ -250,8 +224,6 @@
 	}
 	
 	.flyer-button__loading-icon {
-		animation: rotating 2s linear infinite;
-		color: inherit;
 	}
 	
 	.flyer-button__icon {
@@ -259,23 +231,11 @@
 	}
 	
 	.flyer-button__icon-text {
-		color: inherit;
-		font-size: inherit;
+		font-size: 14px;
 	}
 	
 	.flyer-button__text {
-		color: inherit;
-		font-size: inherit;
-		line-height: inherit;
-	}
-	
-	/* 旋转动画 */
-	@keyframes rotating {
-		0% {
-			transform: rotate(0deg);
-		}
-		100% {
-			transform: rotate(360deg);
-		}
+		font-size: 14px;
+		line-height: 20px;
 	}
 </style>

@@ -5,7 +5,7 @@
 import { reactive } from 'vue'
 
 // 对话框配置接口
-type DialogConfig = {
+export type DialogConfig = {
   title?: string
   content?: string
   confirmText?: string
@@ -19,16 +19,16 @@ type DialogConfig = {
 // 定义一个大写的 State 类型
 export type State = {
   visible: boolean
-  title: string
+  title?: string
   content: string
   confirmText: string
   cancelText: string
   showCancel: boolean
   zIndex: number
-  targetId: string | null
+  targetId?: string
   maskClosable: boolean
-  resolvePromise: ((value: boolean) => void) | null
-  rejectPromise: ((reason?: any) => void) | null
+  resolvePromise?: ((value: boolean) => void)
+  rejectPromise?: ((reason?: any) => void)
 }
 
 // 实例化为响应式 state
@@ -46,95 +46,100 @@ export const state = reactive({
   rejectPromise: null
 } as State)
 
-// 状态管理方法
-export const mutations = {
-  // 显示对话框
-  show(config?: DialogConfig): Promise<boolean> {
-    // 设置默认值和用户配置
-    state.title = config?.title || '提示'
-    state.content = config?.content || ''
-    state.confirmText = config?.confirmText || '确定'
-    state.cancelText = config?.cancelText || '取消'
-    state.showCancel = config?.showCancel != null ? config.showCancel : true
-    state.zIndex = config?.zIndex || 9999
-    state.targetId = config?.id || null
-    state.maskClosable = config?.maskClosable != null ? config.maskClosable : true
-    
-    state.visible = true
+// 内部重置函数
+function resetState() {
+  state.targetId = null
+  state.resolvePromise = null
+  state.rejectPromise = null
+}
 
-    return new Promise<boolean>((resolve, reject) => {
-      state.resolvePromise = resolve
-      state.rejectPromise = reject
-    })
-  },
+// 显示对话框的函数
+export function show(config: DialogConfig): Promise<boolean> {
+  // 设置默认值和用户配置
+  if(config.title != null) {
+    state.title = config.title
+  }
+  if(config.content != null) {
+    state.content = config.content
+  }
+  if(config.confirmText != null) {
+    state.confirmText = config.confirmText
+  }
+  if(config.cancelText != null) {
+    state.cancelText = config.cancelText
+  }
+  if(config.showCancel != null) {
+    state.showCancel = config.showCancel
+  }
+  if(config.zIndex != null) {
+    state.zIndex = config.zIndex
+  }
+  if(config.id != null) {
+    state.targetId = config.id
+  }
+  if (config.maskClosable != null) {
+    state.maskClosable = config.maskClosable
+  } else {
+    state.maskClosable = true
+  }
 
-  // 确认操作
-  confirm() {
-    state.visible = false
-    const resolve = state.resolvePromise
-    this.reset()
-    
-    if (resolve != null) {
-      resolve(true)
-    }
-  },
+  state.visible = true
 
-  // 取消操作
-  cancel() {
-    state.visible = false
-    const resolve = state.resolvePromise
-    this.reset()
-    
-    if (resolve != null) {
-      resolve(false)
-    }
-  },
+  return new Promise<boolean>((resolve, reject) => {
+    state.resolvePromise = resolve
+    state.rejectPromise = reject
+  })
+}
 
-  // 关闭对话框
-  close() {
-    state.visible = false
-    const reject = state.rejectPromise
-    this.reset()
-    
-    if (reject != null) {
-      reject('closed')
-    }
-  },
+// 确认操作函数
+export function confirm() {
+  state.visible = false
+  const resolve = state.resolvePromise
+  resetState()
+  
+  if (resolve != null) {
+    resolve(true)
+  }
+}
 
-  // 重置状态
-  reset() {
-    state.targetId = null
-    state.resolvePromise = null
-    state.rejectPromise = null
-  },
+// 取消操作函数
+export function cancel() {
+  state.visible = false
+  const resolve = state.resolvePromise
+  resetState()
+  
+  if (resolve != null) {
+    resolve(false)
+  }
+}
 
-  // Alert 快捷方法（只有确定按钮）
-  alert(content: string, title?: string): Promise<boolean> {
-    return this.show({
-      title: title || '提示',
-      content: content,
-      showCancel: false,
-      confirmText: '确定'
-    })
-  },
-
-  // Confirm 快捷方法（确定和取消按钮）
-  showConfirm(content: string, title?: string): Promise<boolean> {
-    return this.show({
-      title: title || '确认',
-      content: content,
-      showCancel: true,
-      confirmText: '确定',
-      cancelText: '取消'
-    })
+// 关闭对话框函数
+export function close() {
+  state.visible = false
+  const reject = state.rejectPromise
+  resetState()
+  
+  if (reject != null) {
+    reject('closed')
   }
 }
 
 // 添加便捷方法的别名，保持向后兼容
-export const showAlert = (content: string, title?: string): Promise<boolean> => {
-  return mutations.alert(content, title)
+export function showAlert(content: string, title: string = ''): Promise<boolean> {
+  return show({
+    title: title,
+    content: content,
+    showCancel: false,
+    confirmText: '确定'
+  })
 }
 
-export const showConfirm = (content: string, title?: string): Promise<boolean> => {
-  return mutations.showConfirm(content, title)
+export function showConfirm(content: string, title: string = ''): Promise<boolean> {
+  return show({
+    title: title,
+    content: content,
+    showCancel: true,
+    confirmText: '确定',
+    cancelText: '取消'
+  })
 }
