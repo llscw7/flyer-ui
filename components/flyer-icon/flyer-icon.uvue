@@ -1,20 +1,12 @@
 <template>
 	<text 
-		class="flyer-icon"
-		:class="[
-			customClass,
-			{
-				'flyer-icon--clickable': clickable
-			}
-		]"
+		:class="iconClasses"
 		:style="iconStyle"
 		@click="handleClick"
 	>{{ iconText }}</text>
 </template>
 
-<script setup lang="uts">
-	import { computed } from 'vue'
-	
+<script lang="uts">
 	// uni-app x 内置图标映射表
 	const UNI_ICONS: UTSJSONObject = {
 		'forward': '\uE600',
@@ -39,163 +31,211 @@
 		'search': '\uEA23'
 	}
 
-	// 自定义iconfont图标映射表（基于项目中的iconfont.json）
+	// 自定义 iconfont 图标映射表
 	const ICONFONT_ICONS: UTSJSONObject = {
 		// 金融相关
-		'caipiao': '\ue600',           // 彩票
-		'huiyuanqia': '\ue601',        // 会员卡  
-		'shuzirenminbi': '\ue602',     // 数字人民币
-		'bitebi': '\ue603',            // 比特币
-		'yingshou': '\ue607',          // 应收
-		'jiangjin': '\ue608',          // 奖金
-		'zhufangzujin': '\ue609',      // 住房租金
-		'yingfu': '\ue60a',            // 应付
-		'jijin': '\ue610',             // 基金
-		'yanglaojin': '\ue611',        // 养老金
-		'xinyongdaikuan': '\ue614',    // 信用贷款
-		'jiebei': '\ue61e',            // 借呗
-		'qihuo': '\ue78d',             // 期货
-		'dingqicunkuan': '\ue78e',     // 定期存款
-		'huangjin': '\ue78f',          // 黄金
-		'deposit': '\ue790',           // 退押金
-		'gongjijin': '\ue79d',         // 公积金
-		
+		'caipiao': '\ue600',
+		'huiyuanqia': '\ue601',
+		'shuzirenminbi': '\ue602',
+		'bitebi': '\ue603',
+		'yingshou': '\ue607',
+		'jiangjin': '\ue608',
+		'zhufangzujin': '\ue609',
+		'yingfu': '\ue60a',
+		'jijin': '\ue610',
+		'yanglaojin': '\ue611',
+		'xinyongdaikuan': '\ue614',
+		'jiebei': '\ue61e',
+		'qihuo': '\ue78d',
+		'dingqicunkuan': '\ue78e',
+		'huangjin': '\ue78f',
+		'deposit': '\ue790',
+		'gongjijin': '\ue79d',
 		// 购物消费
-		'fanqia': '\ue645',            // 饭卡
-		'qinqingzhanghu': '\ue643',    // 亲情账户
-		'gupiao': '\ue63d',            // 股票
-		
+		'fanqia': '\ue645',
+		'qinqingzhanghu': '\ue643',
+		'gupiao': '\ue63d',
 		// 生活服务
-		'gas-station-fill': '\ue84a',   // 加油站
-		'yibaoka': '\uea0f',           // 医保卡
-		
+		'gas-station-fill': '\ue84a',
+		'yibaoka': '\uea0f',
 		// 常用图标
-		'arrow-right': '\ue63c',       // 右箭头
-		'cash': '\ue647',              // 现金
-		'coupon': '\ue649',            // 优惠券
-		'exchange': '\ue64a',          // 兑换
-		'calendar': '\ue64b',          // 日历
-		'piechart': '\ue64c',          // 饼图
-		'vip': '\ue64f',               // VIP
-		'thumbup-line': '\ue652',      // 点赞线条
-		'thumbup-fill': '\ue658',      // 点赞填充
-		'thumbdown-line': '\ue655',    // 点踩线条
-		'thumbdown-fill': '\ue65a',    // 点踩填充
-		'star-line': '\ue65d',         // 星星线条
-		'star-s-line': '\ue65b',       // 小星星线条
-		'search-line': '\ue65c',       // 搜索线条
-		'shopping-cart': '\ue65e',     // 购物车
-		'shopping-basket': '\ue65f',   // 购物篮
-		'money-cny': '\ue661',         // 人民币
-		'gift': '\ue662',              // 礼品
-		'cash-briefcase': '\ue664',    // 现金公文包
-		'beer': '\ue665',              // 啤酒
-		'hospital': '\ue666',          // 医院
-		'restaurant': '\ue667',        // 餐厅
-		'home2': '\ue66e',             // 家2
-		'heart': '\ue66f',             // 爱心
-		'phone': '\ue670',             // 电话
-		'run': '\ue671',               // 跑步
-		'heart2': '\ue672',            // 爱心2
-		'movie': '\ue673',             // 电影
-		'pet-paw': '\ue674',           // 宠物爪
-		'mac': '\ue675',               // 苹果电脑
-		'lipstick': '\ue676',          // 口红
-		'share2': '\ue677',            // 分享2
-		'plane': '\ue678',             // 飞机
-		'share-coin': '\ue679',        // 分享硬币
-		'cherry': '\ue67a',            // 樱桃
-		'family': '\ue67b',            // 家庭
-		'goblet': '\ue67c',            // 高脚杯
-		'truck': '\ue67d',             // 卡车
-		'gamepad': '\ue67e'            // 游戏手柄
+		'arrow-right': '\ue63c',
+		'cash': '\ue647',
+		'coupon': '\ue649',
+		'exchange': '\ue64a',
+		'calendar': '\ue64b',
+		'piechart': '\ue64c',
+		'vip': '\ue64f',
+		'thumbup-line': '\ue652',
+		'thumbup-fill': '\ue658',
+		'thumbdown-line': '\ue655',
+		'thumbdown-fill': '\ue65a',
+		'star-line': '\ue65d',
+		'star-s-line': '\ue65b',
+		'search-line': '\ue65c',
+		'shopping-cart': '\ue65e',
+		'shopping-basket': '\ue65f',
+		'money-cny': '\ue661',
+		'gift': '\ue662',
+		'cash-briefcase': '\ue664',
+		'beer': '\ue665',
+		'hospital': '\ue666',
+		'restaurant': '\ue667',
+		'home2': '\ue66e',
+		'heart': '\ue66f',
+		'phone': '\ue670',
+		'run': '\ue671',
+		'heart2': '\ue672',
+		'movie': '\ue673',
+		'pet-paw': '\ue674',
+		'mac': '\ue675',
+		'lipstick': '\ue676',
+		'share2': '\ue677',
+		'plane': '\ue678',
+		'share-coin': '\ue679',
+		'cherry': '\ue67a',
+		'family': '\ue67b',
+		'goblet': '\ue67c',
+		'truck': '\ue67d',
+		'gamepad': '\ue67e'
 	}
 
-	// 使用 defineOptions 定义组件名
-	defineOptions({
-		name: 'FlyerIcon'
-	})
+	// 定义字体族类型
+	type FontFamily = 'uni-icon' | 'iconfont' | string
 
-	// 定义 Props
-	const props = withDefaults(defineProps<{
-		// 图标名称或Unicode字符
-		name?: string,
-		// 图标大小
-		size?: string | number,
-		// 图标颜色
-		color?: string,
-		// 字体族名称：uni-icon | iconfont | 自定义
-		fontFamily?: string,
-		// 是否可点击
-		clickable?: boolean,
-		// 自定义类名
-		customClass?: string,
-		// 自定义样式
-		customStyle?: UTSJSONObject
-	}>(), {
-		name: '',
-		size: 16,
-		color: '#333333',
-		fontFamily: 'uni-icon',
-		clickable: false,
-		customClass: '',
-		customStyle: () => ({} as UTSJSONObject)
-	})
-
-	// 定义 Emits
-	const emit = defineEmits<{
-		(e: 'click', event: any): void
-	}>()
-
-	// 获取尺寸值
-	const getSizeValue = (): string => {
-		if (typeof props.size == 'number') {
-			return props.size + 'px'
-		}
-		return props.size as string
-	}
-
-	// 计算属性 - 图标文本
-	const iconText = computed<string>(() => {
-		// 如果是内置uni-icon，从映射表获取
-		if (props.fontFamily == 'uni-icon' && UNI_ICONS[props.name] != null) {
-			return UNI_ICONS[props.name] as string
-		}
-		// 如果是自定义iconfont，从映射表获取
-		if (props.fontFamily == 'iconfont' && ICONFONT_ICONS[props.name] != null) {
-			return ICONFONT_ICONS[props.name] as string
-		}
-		// 如果直接传入Unicode字符，直接使用
-		if (props.name.length > 2 && (props.name.charAt(0) == '\\' && props.name.charAt(1) == 'u')) {
-			return props.name
-		}
-		// 其他情况，当作普通文本处理
-		return props.name
-	})
-
-	// 计算属性 - 图标样式
-	const iconStyle = computed<UTSJSONObject>(() => {
-		let style: UTSJSONObject = {
-			'font-family': props.fontFamily,
-			'font-size': getSizeValue(),
-			'color': props.color
-		}
+	export default {
+		name: 'FlyerIcon',
 		
-		// 合并自定义样式
-		if (props.customStyle != null) {
-			const customStyle = props.customStyle as UTSJSONObject
-			for (let key in customStyle) {
-				style[key] = customStyle[key]
+		props: {
+			// 图标名称或Unicode字符
+			name: {
+				type: String,
+				required: true
+			},
+			// 图标大小
+			size: {
+				type: [String, Number],
+				default: 16
+			},
+			// 图标颜色
+			color: {
+				type: String,
+				default: '#333333'
+			},
+			// 字体族名称
+			fontFamily: {
+				type: String,
+				default: 'uni-icon'
+			},
+			// 是否可点击
+			clickable: {
+				type: Boolean,
+				default: false
+			},
+			// 自定义类名
+			customClass: {
+				type: String,
+				default: ''
+			},
+			// 自定义样式
+			customStyle: {
+				type: Object,
+				default: () => {
+					return {} as UTSJSONObject
+				}
 			}
-		}
-		
-		return style
-	})
+		},
 
-	// 点击事件处理
-	const handleClick = (event: any) => {
-		if (props.clickable) {
-			emit('click', event)
+		computed: {
+			// 计算属性 - 图标文本
+			iconText(): string {
+				// 空名称处理
+				if (this.name == null || this.name.length == 0) return ''
+				
+				// uni-icon 映射
+				if (this.fontFamily === 'uni-icon' && UNI_ICONS[this.name] != null) {
+					return UNI_ICONS[this.name] as string
+				}
+				
+				// iconfont 映射
+				if (this.fontFamily === 'iconfont' && ICONFONT_ICONS[this.name] != null) {
+					return ICONFONT_ICONS[this.name] as string
+				}
+				
+				// Unicode 字符直接使用 - 检查是否包含Unicode转义序列
+				const unicodePrefix1 = '\\u'
+				const unicodePrefix2 = String.fromCharCode(92, 117) // 反斜杠 + u
+				if (this.name.indexOf(unicodePrefix1) != -1 || this.name.indexOf(unicodePrefix2) != -1) {
+					return this.name
+				}
+				
+				// 默认返回原名称
+				return this.name
+			},
+
+			// 计算属性 - 图标样式
+			iconStyle(): UTSJSONObject {
+				const sizeValue = typeof this.size === 'number' ? `${this.size}px` : this.size
+				
+				const style: UTSJSONObject = {
+					'font-family': this.fontFamily,
+					'font-size': sizeValue,
+					'color': this.color
+				}
+				
+				// 手动合并自定义样式
+				if (this.customStyle != null) {
+					const customStyleObj = this.customStyle as UTSJSONObject
+					// 复制常见样式属性
+					if (customStyleObj['font-weight'] != null) {
+						style['font-weight'] = customStyleObj['font-weight']
+					}
+					if (customStyleObj['line-height'] != null) {
+						style['line-height'] = customStyleObj['line-height']
+					}
+					if (customStyleObj['text-align'] != null) {
+						style['text-align'] = customStyleObj['text-align']
+					}
+					if (customStyleObj['opacity'] != null) {
+						style['opacity'] = customStyleObj['opacity']
+					}
+					if (customStyleObj['transform'] != null) {
+						style['transform'] = customStyleObj['transform']
+					}
+					if (customStyleObj['margin'] != null) {
+						style['margin'] = customStyleObj['margin']
+					}
+					if (customStyleObj['padding'] != null) {
+						style['padding'] = customStyleObj['padding']
+					}
+				}
+				
+				return style
+			},
+
+			// 计算属性 - CSS 类列表
+			iconClasses(): string[] {
+				const classes = ['flyer-icon']
+				
+				if (this.customClass != null && this.customClass.length > 0) {
+					classes.push(this.customClass)
+				}
+				
+				if (this.clickable) {
+					classes.push('flyer-icon--clickable')
+				}
+				
+				return classes
+			}
+		},
+
+		methods: {
+			// 点击事件处理
+			handleClick(event: any): void {
+				if (this.clickable) {
+					this.$emit('click', event)
+				}
+			}
 		}
 	}
 </script>

@@ -1,89 +1,178 @@
 <template>
 	<view 
-		class="flyer-button"
-		:class="[
-			`flyer-button--${buttonType}`, 
-			`flyer-button--${buttonSize}`,
-			{
-				'flyer-button--disabled': isDisabled,
-				'flyer-button--loading': isLoading,
-				'flyer-button--plain': isPlain,
-				'flyer-button--round': isRound,
-				'flyer-button--block': isBlock
-			}
-		]"
+		:class="buttonClasses"
 		:style="buttonStyle"
+		@click="handleClick"
 	>
 		<!-- 加载状态 -->
-		<view v-if="isLoading" class="flyer-button__loading">
+		<view v-if="showLoading" class="flyer-button__loading">
 			<text class="flyer-button__loading-icon">●</text>
 		</view>
 		
 		<!-- 图标 -->
-		<view v-if="buttonIcon != null && buttonIcon != '' && !isLoading" class="flyer-button__icon">
-			<text class="flyer-button__icon-text">{{ buttonIcon }}</text>
+		<view v-if="showIcon" class="flyer-button__icon">
+			<text class="flyer-button__icon-text">{{ icon }}</text>
 		</view>
 		
 		<!-- 按钮文字 -->
-		<text v-if="buttonText != null && buttonText != ''" class="flyer-button__text">
-			<slot>{{ buttonText }}</slot>
+		<text v-if="showText" class="flyer-button__text">
+			<slot>{{ text }}</slot>
 		</text>
 	</view>
 </template>
 
-<script setup lang="uts">
-	// 使用 defineOptions 定义组件名
-	defineOptions({
-		name: 'FlyerButton'
-	})
+<script lang="uts">
+	// 定义 Props 类型
+	type ButtonType = 'default' | 'primary' | 'success' | 'warning' | 'danger' | 'info'
+	type ButtonSize = 'large' | 'normal' | 'small' | 'mini'
 
-	// 定义 Props
-	const props = withDefaults(defineProps<{
-		// 按钮类型：primary | success | warning | danger | info | default
-		type?: string,
-		// 按钮尺寸：large | normal | small | mini
-		size?: string,
-		// 按钮文字
-		text?: string,
-		// 是否禁用
-		disabled?: boolean,
-		// 是否加载中
-		loading?: boolean,
-		// 是否朴素按钮
-		plain?: boolean,
-		// 是否圆角按钮
-		round?: boolean,
-		// 是否块级按钮
-		block?: boolean,
-		// 图标
-		icon?: string,
-		// 自定义样式
-		customStyle?: UTSJSONObject
-	}>(), {
-		type: 'default',
-		size: 'normal',
-		text: '',
-		disabled: false,
-		loading: false,
-		plain: false,
-		round: false,
-		block: false,
-		icon: '',
-		customStyle: () => ({} as UTSJSONObject)
-	})
+	export default {
+		name: 'FlyerButton',
+		
+		props: {
+			// 按钮类型
+			type: {
+				type: String,
+				default: 'default'
+			},
+			// 按钮尺寸
+			size: {
+				type: String,
+				default: 'normal'
+			},
+			// 按钮文字
+			text: {
+				type: String,
+				default: ''
+			},
+			// 是否禁用
+			disabled: {
+				type: Boolean,
+				default: false
+			},
+			// 是否加载中
+			loading: {
+				type: Boolean,
+				default: false
+			},
+			// 是否朴素按钮
+			plain: {
+				type: Boolean,
+				default: false
+			},
+			// 是否圆角按钮
+			round: {
+				type: Boolean,
+				default: false
+			},
+			// 是否块级按钮
+			block: {
+				type: Boolean,
+				default: false
+			},
+			// 图标
+			icon: {
+				type: String,
+				default: ''
+			},
+			// 自定义样式
+			customStyle: {
+				type: Object,
+				default: () => {
+					return {} as UTSJSONObject
+				}
+			}
+		},
 
-	// 计算属性 - 处理默认值
-	const buttonType : string = props.type != null ? props.type : 'default'
-	const buttonSize : string = props.size != null ? props.size : 'normal'
-	const buttonText : string = props.text != null ? props.text : ''
-	const buttonIcon : string = props.icon != null ? props.icon : ''
-	const isDisabled : boolean = props.disabled != null ? props.disabled : false
-	const isLoading : boolean = props.loading != null ? props.loading : false
-	const isPlain : boolean = props.plain != null ? props.plain : false
-	const isRound : boolean = props.round != null ? props.round : false
-	const isBlock : boolean = props.block != null ? props.block : false
-	const buttonStyle : UTSJSONObject = props.customStyle != null ? props.customStyle : ({} as UTSJSONObject)
+		computed: {
+			// 计算属性 - 按钮类样式
+			buttonClasses(): string[] {
+				const classes: string[] = ['flyer-button']
+				
+				classes.push(`flyer-button--${this.type}`)
+				classes.push(`flyer-button--${this.size}`)
+				
+				if (this.disabled) classes.push('flyer-button--disabled')
+				if (this.loading) classes.push('flyer-button--loading')
+				if (this.plain) classes.push('flyer-button--plain')
+				if (this.round) classes.push('flyer-button--round')
+				if (this.block) classes.push('flyer-button--block')
+				
+				return classes
+			},
 
+			// 计算属性 - 是否显示加载图标
+			showLoading(): boolean {
+				return this.loading
+			},
+
+			// 计算属性 - 是否显示图标
+			showIcon(): boolean {
+				return this.icon.length > 0 && !this.loading
+			},
+
+			// 计算属性 - 是否显示文本
+			showText(): boolean {
+				return this.text.length > 0
+			},
+
+			// 计算属性 - 动态样式
+		buttonStyle(): UTSJSONObject {
+			// UTS 中无法遍历 UTSJSONObject，直接创建基础样式对象
+			let baseStyle: UTSJSONObject = {}
+			
+			// 如果有自定义样式，进行类型转换后使用
+			if (this.customStyle != null) {
+				baseStyle = this.customStyle as UTSJSONObject
+			}
+			
+			// 如果是块级按钮，确保宽度为100%
+			if (this.block) {
+				// 创建新对象以避免修改原始 customStyle
+				const blockStyle: UTSJSONObject = {}
+				if (this.customStyle != null) {
+					const customStyleObj = this.customStyle as UTSJSONObject
+					// 简单的属性复制，只复制常见的样式属性
+					if (customStyleObj['color'] != null) {
+						blockStyle['color'] = customStyleObj['color']
+					}
+					if (customStyleObj['backgroundColor'] != null) {
+						blockStyle['backgroundColor'] = customStyleObj['backgroundColor']
+					}
+					if (customStyleObj['fontSize'] != null) {
+						blockStyle['fontSize'] = customStyleObj['fontSize']
+					}
+					if (customStyleObj['border'] != null) {
+						blockStyle['border'] = customStyleObj['border']
+					}
+					if (customStyleObj['borderRadius'] != null) {
+						blockStyle['borderRadius'] = customStyleObj['borderRadius']
+					}
+					if (customStyleObj['padding'] != null) {
+						blockStyle['padding'] = customStyleObj['padding']
+					}
+					if (customStyleObj['margin'] != null) {
+						blockStyle['margin'] = customStyleObj['margin']
+					}
+				}
+				blockStyle['width'] = '100%'
+				baseStyle = blockStyle
+			}
+			
+			return baseStyle
+			}
+		},
+
+		methods: {
+			// 点击事件处理
+			handleClick(event: any): void {
+				if (this.disabled || this.loading) {
+					return
+				}
+				this.$emit('click', event)
+			}
+		}
+	}
 </script>
 
 <style>
@@ -224,6 +313,7 @@
 	}
 	
 	.flyer-button__loading-icon {
+		/* 移除inherit，使用默认颜色 */
 	}
 	
 	.flyer-button__icon {

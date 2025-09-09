@@ -34,8 +34,11 @@
 	</view>
 </template>
 
-<script setup lang="uts">
-	// 测试页面，暂无需要特殊处理的逻辑
+<script lang="uts">
+export default {
+  name: 'TestIcon'
+  // 测试页面，暂无需要特殊处理的逻辑
+}
 </script>
 
 <style>

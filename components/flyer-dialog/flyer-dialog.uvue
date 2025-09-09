@@ -3,73 +3,98 @@
     <view class="flyer-dialog-modal">
       <!-- 标题区域 -->
       <view v-if="hasTitle" class="flyer-dialog-header">
-        <text class="flyer-dialog-title">{{ state.title }}</text>
+        <text class="flyer-dialog-title">{{ dialogTitle }}</text>
       </view>
 
       <!-- 内容区域 -->
       <view class="flyer-dialog-body" :class="{ 'has-title': hasTitle }">
-        <text class="flyer-dialog-content">{{ state.content }}</text>
+        <text class="flyer-dialog-content">{{ dialogContent }}</text>
       </view>
 
       <!-- 按钮区域 -->
       <view class="flyer-dialog-footer">
-        <view v-if="state.showCancel" class="flyer-dialog-btn flyer-dialog-btn--cancel" @click="handleCancel">
-          <text class="flyer-dialog-btn-text flyer-dialog-btn-text--cancel">{{ state.cancelText }}</text>
+        <view v-if="showCancel" class="flyer-dialog-btn flyer-dialog-btn--cancel" @click="handleCancel">
+          <text class="flyer-dialog-btn-text flyer-dialog-btn-text--cancel">{{ cancelText }}</text>
         </view>
         <view class="flyer-dialog-btn flyer-dialog-btn--confirm" @click="handleConfirm">
-          <text class="flyer-dialog-btn-text flyer-dialog-btn-text--confirm">{{ state.confirmText }}</text>
+          <text class="flyer-dialog-btn-text flyer-dialog-btn-text--confirm">{{ confirmText }}</text>
         </view>
       </view>
     </view>
   </view>
 </template>
 
-<script setup lang="uts">
-import { computed } from 'vue'
+<script lang="uts">
 import { state, cancel, confirm } from './store.uts'
 
-// 定义组件选项
-defineOptions({
-  name: 'FlyerDialog'
-})
+export default {
+  name: 'FlyerDialog',
 
-// 定义 props
-const props = defineProps<{
-  id?: string
-}>()
+  props: {
+    id: {
+      type: String,
+      default: ''
+    }
+  },
 
-const hasTitle = computed(()=>{
-  return state.title != null && state.title != ''
-})
+  computed: {
+    hasTitle(): boolean {
+      return state.title != null && state.title != ''
+    },
 
-const shouldShow = computed(() => {
-  if (state.targetId == null) {
-    return state.visible
-  }
-  return state.visible && state.targetId == props.id
-})
+    shouldShow(): boolean {
+      if (state.targetId == null) {
+        return state.visible
+      }
+      return state.visible && state.targetId == this.id
+    },
 
-// 计算遮罩样式
-const overlayStyle = computed(() => {
-  return {
-    zIndex: state.zIndex
-  }
-})
+    // 暴露状态给模板使用
+    dialogTitle(): string | null {
+      return state.title
+    },
 
-// 事件处理函数
-function handleCancel() {
-    console.log('取消按钮被点')
-  cancel()
-}
+    dialogContent(): string {
+      return state.content
+    },
 
-function handleConfirm() {
-    console.log('确认按钮被点')
-  confirm()
-}
+    confirmText(): string {
+      return state.confirmText
+    },
 
-function handleOverlayClick() {
-  if (state.maskClosable) {
-    handleCancel()
+    cancelText(): string {
+      return state.cancelText
+    },
+
+    showCancel(): boolean {
+      return state.showCancel
+    },
+
+    // 计算遮罩样式
+    overlayStyle(): UTSJSONObject {
+      return {
+        zIndex: state.zIndex
+      }
+    }
+  },
+
+  methods: {
+    // 事件处理函数
+    handleCancel(): void {
+      console.log('取消按钮被点击')
+      cancel()
+    },
+
+    handleConfirm(): void {
+      console.log('确认按钮被点击')
+      confirm()
+    },
+
+    handleOverlayClick(): void {
+      if (state.maskClosable) {
+        this.handleCancel()
+      }
+    }
   }
 }
 </script>

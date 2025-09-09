@@ -2,6 +2,46 @@
 
 基于 uni-app x 的移动端组件库
 
+## 🎯 项目重构说明（v1.1.0）
+
+本次重构严格按照 **CROSS_PLATFORM.prompt.md** 定义的规则进行，主要改进包括：
+
+### 📱 跨平台适配优化
+- ✅ **App.uvue**: 重构为现代 Composition API，增强平台检测和主题适配
+- ✅ **条件编译**: 规范化 `#ifdef`/`#endif` 使用，支持 Android/iOS/Web/HarmonyOS
+- ✅ **安全区域**: 统一处理刘海屏和异形屏适配
+- ✅ **主题系统**: 支持亮色/暗色主题自动切换
+
+### 🔧 组件代码规范化  
+- ✅ **flyer-button**: 优化 TypeScript 类型定义，使用计算属性提升性能
+- ✅ **flyer-icon**: 简化图标映射逻辑，增强字体图标支持
+- ✅ **统一命名**: 严格按照 UTS/UVUE 规范重构所有组件
+
+### 🛠️ 工具类统一封装
+- ✅ **PlatformUtils**: 跨平台系统信息获取、设备检测、主题管理
+- ✅ **NavigationManager**: 统一导航封装，错误处理、防抖、智能返回
+- ✅ **模块化设计**: 工具类按功能模块化，便于维护和扩展
+
+### 📋 代码质量提升
+- ✅ **删除冗余代码**: 清理第三方组件和无用逻辑
+- ✅ **性能优化**: 使用计算属性、减少重复计算、优化渲染性能
+- ✅ **错误处理**: 统一异常捕获和用户友好提示
+- ✅ **TypeScript**: 严格类型检查，提升代码可靠性
+
+### 🎨 用户体验改进
+- ✅ **响应式设计**: 支持平板设备和横竖屏切换
+- ✅ **加载状态**: 优化页面跳转和组件交互反馈
+- ✅ **视觉设计**: 现代化 UI 设计，支持深色主题
+- ✅ **无障碍**: 增强组件可访问性支持
+
+### 📚 开发规范完善
+- ✅ **跨平台指南**: 详细的条件编译和API适配规范
+- ✅ **组件开发**: UVUE组件和UTS模块开发最佳实践  
+- ✅ **架构设计**: 项目结构和模块划分规范
+- ✅ **文档体系**: 完整的开发文档和快速参考
+
+---
+
 ## 特性
 
 - 🎯 专为 uni-app x 设计，完美兼容
@@ -91,14 +131,35 @@ export default {
 
 ```
 flyer-ui/
-├── components/              # 组件源码
-│   └── flyer-button/       # Button组件
-├── pages/                  # 示例页面
-│   ├── index/              # 首页
-│   └── examples/           # 组件示例
-├── common/                 # 通用资源
-│   └── flyer-ui.scss       # 样式变量
-└── static/                 # 静态资源
+├── App.uvue                    # 应用入口文件（已重构为 Composition API）
+├── components/                 # 组件源码目录
+│   ├── flyer-button/          # Button 按钮组件（已优化）
+│   ├── flyer-icon/            # Icon 图标组件（已优化）
+│   ├── flyer-dialog/          # Dialog 对话框组件
+│   ├── flyer-popup/           # Popup 弹窗组件  
+│   └── flyer-actionsheet/     # ActionSheet 组件
+├── pages/                     # 页面目录
+│   ├── index/                 # 首页（已重构，使用工具类）
+│   └── examples/              # 组件示例页面
+│       ├── button/            # Button 示例（已优化）
+│       ├── icon/              # Icon 示例
+│       ├── dialog/            # Dialog 示例
+│       ├── popup/             # Popup 示例
+│       └── actionsheet/       # ActionSheet 示例
+├── utils/                     # 工具类目录（新增）
+│   ├── platform.uts          # 跨平台工具类
+│   ├── navigation.uts         # 导航工具类
+│   └── index.uts              # 工具类统一导出
+├── .github/prompts/           # 开发规范文档
+│   ├── CROSS_PLATFORM.prompt.md    # 跨平台开发指南
+│   ├── UVUE_COMPONENT.prompt.md    # UVUE 组件开发规范
+│   ├── UTS_MODULE.prompt.md        # UTS 模块开发规范
+│   ├── REACTIVE_SYSTEM.prompt.md   # 响应式系统指南
+│   ├── PROJECT_ARCHITECTURE.prompt.md # 项目架构规范
+│   └── README.prompt.md             # 文档编写规范
+├── static/                    # 静态资源
+├── package.json              # 项目配置
+└── README.md                 # 项目说明
 ```
 
 ### 开发规范文档
@@ -139,6 +200,32 @@ flyer-ui/
 [MIT License](https://opensource.org/licenses/MIT)
 
 ## 更新日志
+
+### v1.1.0 (2024-01-XX) - 跨平台重构版本
+
+**重大重构**
+- 🔄 按照 CROSS_PLATFORM.prompt.md 规范全面重构项目
+- 🎯 App.uvue 升级为 Composition API，增强平台适配
+- 🛠️ 新增 utils 工具类系统，提供统一的平台和导航管理
+- 📱 完善跨平台条件编译和安全区域适配
+- 🎨 优化组件性能和用户体验
+
+**组件优化**
+- ✨ flyer-button: 重构类型系统，优化计算属性和事件处理
+- ✨ flyer-icon: 简化图标映射，增强字体图标支持
+- 🔧 统一组件命名规范和代码风格
+
+**新增功能**
+- 🆕 PlatformUtils: 跨平台系统信息获取和设备检测
+- 🆕 NavigationManager: 统一导航封装，支持防抖和错误处理
+- 🆕 主题系统: 支持亮色/暗色主题自动切换
+- 🆕 响应式设计: 支持平板设备和不同屏幕尺寸
+
+**代码质量**
+- 🧹 清理第三方组件和冗余代码
+- 🔒 增强 TypeScript 类型安全
+- ⚡ 性能优化和内存管理改进
+- 📋 完善错误处理和用户提示
 
 ### v1.0.0
 

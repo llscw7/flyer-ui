@@ -173,7 +173,7 @@
 	<!-- #endif -->
 </template>
 
-<script setup lang="uts">
+<script lang="uts">
 	// 定义图标类型
 	type IconData = {
 		name: string,
@@ -181,106 +181,114 @@
 		label?: string
 	}
 
-	// 响应式数'
-	const isFavorite = ref<boolean>(false)
+	export default {
+		data() {
+			return {
+				// 响应式数据
+				isFavorite: false as boolean,
 
-	// uni-icon 图标数据
-	const uniIcons = ref<IconData[]>([
-		{ name: 'forward', desc: '前进' },
-		{ name: 'back', desc: '返回' },
-		{ name: 'share', desc: '分享' },
-		{ name: 'favorites', desc: '收藏' },
-		{ name: 'home', desc: '首页' },
-		{ name: 'more', desc: '更多' },
-		{ name: 'close', desc: '关闭' },
-		{ name: 'down', desc: '下拉' },
-		{ name: 'circle', desc: '圆圈' },
-		{ name: 'info', desc: '信息' },
-		{ name: 'info-circle', desc: '信息圆圈' },
-		{ name: 'success', desc: '成功' },
-		{ name: 'success-circle', desc: '成功圆圈' },
-		{ name: 'success-no-circle', desc: '成功无圆' },
-		{ name: 'cancel-circle', desc: '取消圆圈' },
-		{ name: 'warn', desc: '警告' },
-		{ name: 'clear', desc: '清除' },
-		{ name: 'download', desc: '下载' },
-		{ name: 'waiting', desc: '等待' },
-		{ name: 'search', desc: '搜索' }
-	])
+				// uni-icon 图标数据
+				uniIcons: [
+					{ name: 'forward', desc: '前进' },
+					{ name: 'back', desc: '返回' },
+					{ name: 'share', desc: '分享' },
+					{ name: 'favorites', desc: '收藏' },
+					{ name: 'home', desc: '首页' },
+					{ name: 'more', desc: '更多' },
+					{ name: 'close', desc: '关闭' },
+					{ name: 'down', desc: '下拉' },
+					{ name: 'circle', desc: '圆圈' },
+					{ name: 'info', desc: '信息' },
+					{ name: 'info-circle', desc: '信息圆圈' },
+					{ name: 'success', desc: '成功' },
+					{ name: 'success-circle', desc: '成功圆圈' },
+					{ name: 'success-no-circle', desc: '成功无圆' },
+					{ name: 'cancel-circle', desc: '取消圆圈' },
+					{ name: 'warn', desc: '警告' },
+					{ name: 'clear', desc: '清除' },
+					{ name: 'download', desc: '下载' },
+					{ name: 'waiting', desc: '等待' },
+					{ name: 'search', desc: '搜索' }
+				] as IconData[],
 
-	// 金融图标数据
-	const financeIcons = ref<IconData[]>([
-		{ name: 'caipiao', label: '彩票' },
-		{ name: 'huiyuanqia', label: '会员' },
-		{ name: 'shuzirenminbi', label: '数字人民' },
-		{ name: 'bitebi', label: '比特' },
-		{ name: 'jijin', label: '基金' },
-		{ name: 'yanglaojin', label: '养老金' },
-		{ name: 'xinyongdaikuan', label: '信用贷款' },
-		{ name: 'jiebei', label: '借呗' },
-		{ name: 'qihuo', label: '期货' },
-		{ name: 'dingqicunkuan', label: '定期存款' },
-		{ name: 'huangjin', label: '黄金' },
-		{ name: 'gongjijin', label: '公积' },
-		{ name: 'gupiao', label: '股票' },
-		{ name: 'yingshou', label: '应收' },
-		{ name: 'yingfu', label: '应付' },
-		{ name: 'jiangjin', label: '奖金' }
-	])
+				// 金融图标数据
+				financeIcons: [
+					{ name: 'caipiao', label: '彩票' },
+					{ name: 'huiyuanqia', label: '会员卡' },
+					{ name: 'shuzirenminbi', label: '数字人民币' },
+					{ name: 'bitebi', label: '比特币' },
+					{ name: 'jijin', label: '基金' },
+					{ name: 'yanglaojin', label: '养老金' },
+					{ name: 'xinyongdaikuan', label: '信用贷款' },
+					{ name: 'jiebei', label: '借呗' },
+					{ name: 'qihuo', label: '期货' },
+					{ name: 'dingqicunkuan', label: '定期存款' },
+					{ name: 'huangjin', label: '黄金' },
+					{ name: 'gongjijin', label: '公积金' },
+					{ name: 'gupiao', label: '股票' },
+					{ name: 'yingshou', label: '应收' },
+					{ name: 'yingfu', label: '应付' },
+					{ name: 'jiangjin', label: '奖金' }
+				] as IconData[],
 
-	// 生活服务图标数据
-	const lifeIcons = ref<IconData[]>([
-		{ name: 'fanqia', label: '饭卡' },
-		{ name: 'gas-station-fill', label: '加油' },
-		{ name: 'yibaoka', label: '医保' },
-		{ name: 'zhufangzujin', label: '住房租金' },
-		{ name: 'deposit', label: '退押金' },
-		{ name: 'hospital', label: '医院' },
-		{ name: 'restaurant', label: '餐厅' },
-		{ name: 'home2', label: '家庭' },
-		{ name: 'beer', label: '啤酒' },
-		{ name: 'phone', label: '电话' },
-		{ name: 'movie', label: '电影' },
-		{ name: 'pet-paw', label: '宠物' }
-	])
+				// 生活服务图标数据
+				lifeIcons: [
+					{ name: 'fanqia', label: '饭卡' },
+					{ name: 'gas-station-fill', label: '加油站' },
+					{ name: 'yibaoka', label: '医保卡' },
+					{ name: 'zhufangzujin', label: '住房租金' },
+					{ name: 'deposit', label: '退押金' },
+					{ name: 'hospital', label: '医院' },
+					{ name: 'restaurant', label: '餐厅' },
+					{ name: 'home2', label: '家庭' },
+					{ name: 'beer', label: '啤酒' },
+					{ name: 'phone', label: '电话' },
+					{ name: 'movie', label: '电影' },
+					{ name: 'pet-paw', label: '宠物' }
+				] as IconData[],
 
-	// 常用功能图标数据
-	const commonIcons = ref<IconData[]>([
-		{ name: 'cash', label: '现金' },
-		{ name: 'coupon', label: '优惠' },
-		{ name: 'exchange', label: '兑换' },
-		{ name: 'calendar', label: '日历' },
-		{ name: 'piechart', label: '饼图' },
-		{ name: 'vip', label: 'VIP' },
-		{ name: 'thumbup-line', label: '点赞' },
-		{ name: 'thumbdown-line', label: '点踩' },
-		{ name: 'star-line', label: '星星' },
-		{ name: 'search-line', label: '搜索' },
-		{ name: 'shopping-cart', label: '购物' },
-		{ name: 'gift', label: '礼品' },
-		{ name: 'heart', label: '爱心' },
-		{ name: 'run', label: '跑步' },
-		{ name: 'cherry', label: '樱桃' },
-		{ name: 'gamepad', label: '游戏' }
-	])
+				// 常用功能图标数据
+				commonIcons: [
+					{ name: 'cash', label: '现金' },
+					{ name: 'coupon', label: '优惠券' },
+					{ name: 'exchange', label: '兑换' },
+					{ name: 'calendar', label: '日历' },
+					{ name: 'piechart', label: '饼图' },
+					{ name: 'vip', label: 'VIP' },
+					{ name: 'thumbup-line', label: '点赞' },
+					{ name: 'thumbdown-line', label: '点踩' },
+					{ name: 'star-line', label: '星星' },
+					{ name: 'search-line', label: '搜索' },
+					{ name: 'shopping-cart', label: '购物车' },
+					{ name: 'gift', label: '礼品' },
+					{ name: 'heart', label: '爱心' },
+					{ name: 'run', label: '跑步' },
+					{ name: 'cherry', label: '樱桃' },
+					{ name: 'gamepad', label: '游戏' }
+				] as IconData[]
+			}
+		},
 
-	// 图标点击事件处理
-	const handleIconClick = (iconName: string) => {
-		uni.showToast({
-			title: `点击'${iconName} 图标`,
-			icon: 'none',
-			duration: 1500
-		})
-	}
+		methods: {
+			// 图标点击事件处理
+			handleIconClick(iconName: string): void {
+				uni.showToast({
+					title: `点击了${iconName}图标`,
+					icon: 'none',
+					duration: 1500
+				})
+			},
 
-	// 收藏切换处理
-	const toggleFavorite = () => {
-		isFavorite.value = !isFavorite.value
-		uni.showToast({
-			title: isFavorite.value ? '已收' : '取消收藏',
-			icon: 'none',
-			duration: 1000
-		})
+			// 收藏切换处理
+			toggleFavorite(): void {
+				this.isFavorite = !this.isFavorite
+				uni.showToast({
+					title: this.isFavorite ? '已收藏' : '取消收藏',
+					icon: 'none',
+					duration: 1000
+				})
+			}
+		}
 	}
 </script>
 

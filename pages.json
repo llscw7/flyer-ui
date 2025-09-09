@@ -35,6 +35,24 @@
 				"navigationBarTextStyle": "black",
 				"backgroundColor": "#f2f3f5"
 			}
+		},
+		{
+			"path": "pages/examples/popup/popup",
+			"style": {
+				"navigationBarTitleText": "Popup 底部弹窗",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+				"backgroundColor": "#f2f3f5"
+			}
+		},
+		{
+			"path": "pages/examples/actionsheet/actionsheet",
+			"style": {
+				"navigationBarTitleText": "ActionSheet 上拉菜单",
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTextStyle": "black",
+				"backgroundColor": "#f2f3f5"
+			}
 		}
 	],
 	"globalStyle": {

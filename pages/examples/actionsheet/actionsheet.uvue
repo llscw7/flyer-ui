@@ -1,0 +1,137 @@
+<template>
+  <view class="demo-container">
+    <view class="demo-header">
+      <text class="demo-title">FlyerActionsheet 操作面板</text>
+      <text class="demo-desc">从底部弹出的操作面板组件</text>
+    </view>
+    
+    <view class="demo-section">
+      <view class="demo-item">
+        <text class="demo-item-title">基础用法</text>
+        <text class="demo-item-desc">最简单的操作面板</text>
+        <button class="demo-button" @click="showBasicActionsheet">显示基础操作面板</button>
+      </view>
+    </view>
+    
+    <!-- 基础用法 -->
+    <flyer-actionsheet
+      :visible="visible"
+	  :set-visible="setVisible"
+      :item-list="basicItems"
+	  tips="请选择一个选项"
+	  @click="handleBasicClick"
+    />
+    
+  </view>
+</template>
+
+<script lang="uts">
+	type ItemListType = { text : string, color : string, size : number }
+export default {
+  name: 'ActionsheetExample',
+	data() {
+		return {
+			// 基础用法
+			basicItems: [
+				{ text: '选项一', color: '#FF0000', size: 32 },
+				{ text: '选项二', color: '#00FF00', size: 32 },
+				{ text: '选项三', color: '#0000FF', size: 32 }
+			],
+			visible: false,
+			simpleList: [
+				'测试1',
+				'测试2',
+				'测试3',
+			]
+		}
+	},
+	methods: {
+		setVisible(val: boolean) {
+			this.visible = val
+		},
+		showBasicActionsheet(): void {
+			this.setVisible(true)
+		},
+		handleBasicClick(data: any): void {
+			console.log('基础用法点击:', data)
+			this.setVisible(false)
+		},
+		handleBasicCancel(): void {
+			console.log('基础用法取消')
+			this.setVisible(false)
+		},
+	}
+}
+
+</script>
+
+<style scoped>
+.demo-container {
+  padding: 30rpx;
+  background-color: #F5F5F5;
+  min-height: 100vh;
+}
+
+.demo-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+  padding: 40rpx 0;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+}
+
+.demo-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 16rpx;
+}
+
+.demo-desc {
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.demo-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.demo-item {
+  display: flex;
+  flex-direction: column;
+  padding: 40rpx 30rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  margin-bottom: 30rpx;
+}
+
+.demo-item-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 12rpx;
+}
+
+.demo-item-desc {
+  font-size: 26rpx;
+  color: #999999;
+  margin-bottom: 30rpx;
+}
+
+.demo-button {
+  background-color: #007AFF;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12rpx;
+  padding: 24rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: normal;
+}
+
+.demo-button:active {
+  background-color: #0051D5;
+}
+</style>

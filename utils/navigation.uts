@@ -1,0 +1,335 @@
+/**
+ * 导航工具类
+ * 提供统一的页面导航、参数传递、错误处理等功能
+ */
+
+export type NavigateOptions = {
+	url: string,
+	params?: UTSJSONObject,
+	animationType?: string,
+	animationDuration?: number
+}
+
+export type NavigateResult = {
+	success: boolean,
+	error?: any
+}
+
+/**
+ * 导航管理器
+ */
+export class NavigationManager {
+	
+	/**
+	 * 构建URL参数
+	 */
+	private static buildURL(url: string, params?: UTSJSONObject): string {
+		if (params == null) {
+			return url
+		}
+		
+		// 检查对象是否为空，构建查询字符串
+		const queryParts: string[] = []
+		
+		// 遍历参数对象
+		for (const key in params) {
+			const value = params[key]
+			if (value != null) {
+				// 安全的类型转换，避免UTS类型错误
+				let stringValue: string = ''
+				if (typeof value === 'string') {
+					stringValue = value
+				} else if (typeof value === 'number') {
+					stringValue = value.toString()
+				} else if (typeof value === 'boolean') {
+					stringValue = value ? 'true' : 'false'
+				} else {
+					// 对于其他类型，使用JSON序列化
+					stringValue = JSON.stringify(value)
+				}
+				queryParts.push(`${key}=${encodeURIComponent(stringValue)}`)
+			}
+		}
+		
+		// 如果没有有效参数，直接返回原URL
+		if (queryParts.length === 0) {
+			return url
+		}
+		
+		const queryString = queryParts.join('&')
+		return url + (url.includes('?') ? '&' : '?') + queryString
+	}
+	
+	/**
+	 * 保留当前页面，跳转到新页面
+	 */
+	static async navigateTo(options: NavigateOptions): Promise<NavigateResult> {
+		try {
+			const url = this.buildURL(options.url, options.params)
+			
+			return new Promise<NavigateResult>((resolve) => {
+				uni.navigateTo({
+					url,
+					animationType: options.animationType,
+					animationDuration: options.animationDuration,
+					success: () => {
+						console.log('导航成功:', url)
+						resolve({ success: true })
+					},
+					fail: (error) => {
+						console.error('导航失败:', error)
+						resolve({ success: false, error })
+					}
+				})
+			})
+		} catch (error) {
+			console.error('导航异常:', error)
+			return { success: false, error }
+		}
+	}
+	
+	/**
+	 * 关闭当前页面，跳转到新页面
+	 */
+	static async redirectTo(options: NavigateOptions): Promise<NavigateResult> {
+		try {
+			const url = this.buildURL(options.url, options.params)
+			
+			return new Promise<NavigateResult>((resolve) => {
+				uni.redirectTo({
+					url,
+					success: () => {
+						console.log('重定向成功:', url)
+						resolve({ success: true })
+					},
+					fail: (error) => {
+						console.error('重定向失败:', error)
+						resolve({ success: false, error })
+					}
+				})
+			})
+		} catch (error) {
+			console.error('重定向异常:', error)
+			return { success: false, error }
+		}
+	}
+	
+	/**
+	 * 跳转到 tabBar 页面
+	 */
+	static async switchTab(url: string): Promise<NavigateResult> {
+		try {
+			return new Promise<NavigateResult>((resolve) => {
+				uni.switchTab({
+					url,
+					success: () => {
+						console.log('Tab切换成功:', url)
+						resolve({ success: true })
+					},
+					fail: (error) => {
+						console.error('Tab切换失败:', error)
+						resolve({ success: false, error })
+					}
+				})
+			})
+		} catch (error) {
+			console.error('Tab切换异常:', error)
+			return { success: false, error }
+		}
+	}
+	
+	/**
+	 * 关闭所有页面，打开到应用内的某个页面
+	 */
+	static async reLaunch(options: NavigateOptions): Promise<NavigateResult> {
+		try {
+			const url = this.buildURL(options.url, options.params)
+			
+			return new Promise<NavigateResult>((resolve) => {
+				uni.reLaunch({
+					url,
+					success: () => {
+						console.log('重新启动成功:', url)
+						resolve({ success: true })
+					},
+					fail: (error) => {
+						console.error('重新启动失败:', error)
+						resolve({ success: false, error })
+					}
+				})
+			})
+		} catch (error) {
+			console.error('重新启动异常:', error)
+			return { success: false, error }
+		}
+	}
+	
+	/**
+	 * 关闭当前页面，返回上一页面或多级页面
+	 */
+	static async navigateBack(delta: number = 1): Promise<NavigateResult> {
+		try {
+			return new Promise<NavigateResult>((resolve) => {
+				uni.navigateBack({
+					delta,
+					success: () => {
+						console.log('返回成功:', delta)
+						resolve({ success: true })
+					},
+					fail: (error) => {
+						console.error('返回失败:', error)
+						resolve({ success: false, error })
+					}
+				})
+			})
+		} catch (error) {
+			console.error('返回异常:', error)
+			return { success: false, error }
+		}
+	}
+	
+	/**
+	 * 预加载页面（仅 App 端支持）
+	 * 注意：uni-app x 中 preloadPage API 已移除，此方法提供兼容性处理
+	 */
+	static async preloadPage(url: string): Promise<NavigateResult> {
+		// #ifdef APP
+		// uni-app x 中 preloadPage API 已不可用，使用普通导航替代
+		console.warn('preloadPage API 在 uni-app x 中不可用，已降级为普通导航预检查')
+		try {
+			// 进行基础的URL有效性检查
+			if (url == null || typeof url !== 'string') {
+				throw new Error('无效的URL参数')
+			}
+			
+			// 检查页面是否存在（简单的路径验证）
+			if (url.startsWith('/pages/') == false) {
+				console.warn('页面路径可能无效:', url)
+			}
+			
+			console.log('页面预检查完成:', url)
+			return { success: true }
+		} catch (error) {
+			console.error('页面预检查失败:', error)
+			return { success: false, error }
+		}
+		// #endif
+		
+		// #ifndef APP
+		console.log('预加载功能仅在 App 端可用')
+		return { success: false, error: '预加载功能仅在 App 端可用' }
+		// #endif
+	}
+	
+	/**
+	 * 获取当前页面栈
+	 */
+	static getCurrentPages(): any[] {
+		return getCurrentPages()
+	}
+	
+	/**
+	 * 获取当前页面路径
+	 */
+	static getCurrentRoute(): string {
+		const pages = this.getCurrentPages()
+		if (pages.length > 0) {
+			const currentPage = pages[pages.length - 1]
+			// 使用索引访问语法获取route属性，符合UTS规范
+			const route = currentPage['route']
+			return route != null ? route as string : ''
+		}
+		return ''
+	}
+	
+	/**
+	 * 检查页面是否存在于页面栈中
+	 */
+	static isPageInStack(route: string): boolean {
+		const pages = this.getCurrentPages()
+		return pages.some(page => {
+			// 使用索引访问语法获取route属性，符合UTS规范
+			const pageRoute = page['route']
+			return pageRoute === route
+		})
+	}
+	
+	/**
+	 * 获取页面栈深度
+	 */
+	static getPageStackLength(): number {
+		return this.getCurrentPages().length
+	}
+	
+	/**
+	 * 安全导航 - 带错误处理和用户提示
+	 */
+	static async safeNavigateTo(options: NavigateOptions, showErrorToast: boolean = true): Promise<NavigateResult> {
+		const result = await this.navigateTo(options)
+		
+		if (result.success == false && showErrorToast) {
+			uni.showToast({
+				title: '页面跳转失败',
+				icon: 'none',
+				duration: 2000
+			})
+		}
+		
+		return result
+	}
+	
+	/**
+	 * 带加载状态的导航
+	 */
+	static async navigateToWithLoading(
+		options: NavigateOptions,
+		loadingText: string = '跳转中...'
+	): Promise<NavigateResult> {
+		uni.showLoading({
+			title: loadingText
+		})
+		
+		try {
+			const result = await this.navigateTo(options)
+			return result
+		} finally {
+			uni.hideLoading()
+		}
+	}
+	
+	/**
+	 * 防抖导航 - 防止快速点击导致多次跳转
+	 */
+	private static lastNavigateTime: number = 0
+	private static navigateThrottle: number = 500 // 500ms 防抖
+	
+	static async throttleNavigateTo(options: NavigateOptions): Promise<NavigateResult> {
+		const now = Date.now()
+		
+		if (now - this.lastNavigateTime < this.navigateThrottle) {
+			console.log('导航被防抖拦截')
+			return { success: false, error: '操作过于频繁' }
+		}
+		
+		this.lastNavigateTime = now
+		return this.navigateTo(options)
+	}
+	
+	/**
+	 * 智能返回 - 根据页面栈情况决定返回方式
+	 */
+	static async smartBack(): Promise<NavigateResult> {
+		const pageStack = this.getCurrentPages()
+		
+		if (pageStack.length <= 1) {
+			// 只有一个页面，切换到首页
+			return this.reLaunch({ url: '/pages/index/index' })
+		} else {
+			// 有多个页面，正常返回
+			return this.navigateBack()
+		}
+	}
+}
+
+// 便捷导出
+export const nav = NavigationManager

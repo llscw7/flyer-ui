@@ -1,726 +1,635 @@
 <template>
-  <view class="demo-container">
-    <!-- #ifdef APP -->
-    <scroll-view class="demo-scroll" scroll-y="true">
-    <!-- #endif -->
-      <view class="demo-content">
-        <!-- 页面标题 -->
-        <view class="demo-header">
-          <text class="demo-title">Popup 底部弹窗</text>
-          <text class="demo-desc">从底部弹出的模态层，常用于展示操作菜单</text>
-        </view>
+	<view class="demo-container">
+		<!-- #ifdef APP -->
+		<scroll-view class="demo-scroll" scroll-y="true">
+		<!-- #endif -->
+			<view class="demo-content">
+				<!-- 页面标题 -->
+				<view class="demo-header">
+					<text class="demo-title">Popup 底部弹窗</text>
+					<text class="demo-desc">从底部弹出的模态层，常用于展示操作菜单</text>
+				</view>
 
-        <!-- 基础用法 -->
-        <view class="demo-section">
-          <text class="demo-section-title">基础用法</text>
-          <view class="demo-actions">
-            <view class="demo-btn" @click="showBasicPopup">
-              <text class="demo-btn-text">基础弹窗</text>
-            </view>
-            <view class="demo-btn" @click="showActionSheet">
-              <text class="demo-btn-text">操作菜单</text>
-            </view>
-          </view>
-        </view>
+				<!-- 基础用法 -->
+				<view class="demo-section">
+					<text class="demo-section-title">基础用法</text>
+					<view class="demo-actions">
+						<view class="demo-btn" @click="showBasicPopup">
+							<text class="demo-btn-text">基础弹窗</text>
+						</view>
+						<view class="demo-btn" @click="showActionSheet">
+							<text class="demo-btn-text">操作菜单</text>
+						</view>
+					</view>
+				</view>
 
-        <!-- 自定义样�?-->
-        <view class="demo-section">
-          <text class="demo-section-title">自定义样</text>
-          <view class="demo-actions">
-            <view class="demo-btn" @click="showCustomPopup">
-              <text class="demo-btn-text">自定义样</text>
-            </view>
-            <view class="demo-btn" @click="showColorPopup">
-              <text class="demo-btn-text">彩色背景</text>
-            </view>
-          </view>
-        </view>
+				<!-- 自定义样式 -->
+				<view class="demo-section">
+					<text class="demo-section-title">自定义样式</text>
+					<view class="demo-actions">
+						<view class="demo-btn" @click="showCustomPopup">
+							<text class="demo-btn-text">自定义样式</text>
+						</view>
+						<view class="demo-btn" @click="showColorPopup">
+							<text class="demo-btn-text">彩色背景</text>
+						</view>
+					</view>
+				</view>
 
-        <!-- 多实例管�?-->
-        <view class="demo-section">
-          <text class="demo-section-title">多实例管</text>
-          <view class="demo-actions">
-            <view class="demo-btn" @click="showMultiInstance1">
-              <text class="demo-btn-text">实例1</text>
-            </view>
-            <view class="demo-btn" @click="showMultiInstance2">
-              <text class="demo-btn-text">实例2</text>
-            </view>
-          </view>
-        </view>
+				<!-- 多实例管理 -->
+				<view class="demo-section">
+					<text class="demo-section-title">多实例管理</text>
+					<view class="demo-actions">
+						<view class="demo-btn" @click="showMultiInstance1">
+							<text class="demo-btn-text">实例1</text>
+						</view>
+						<view class="demo-btn" @click="showMultiInstance2">
+							<text class="demo-btn-text">实例2</text>
+						</view>
+					</view>
+				</view>
 
-        <!-- 长内容滚�?-->
-        <view class="demo-section">
-          <text class="demo-section-title">长内</text>
-          <view class="demo-actions">
-            <view class="demo-btn" @click="showLongContent">
-              <text class="demo-btn-text">滚动内容</text>
-            </view>
-          </view>
-        </view>
-      </view>
-    <!-- #ifdef APP -->
-    </scroll-view>
-    <!-- #endif -->
+				<!-- 长内容滚动 -->
+				<view class="demo-section">
+					<text class="demo-section-title">长内容滚动</text>
+					<view class="demo-actions">
+						<view class="demo-btn" @click="showLongContent">
+							<text class="demo-btn-text">滚动内容</text>
+						</view>
+					</view>
+				</view>
+			</view>
+		<!-- #ifdef APP -->
+		</scroll-view>
+		<!-- #endif -->
 
-    <!-- 弹窗组件 -->
-    <flyer-popup>
-      <view class="popup-content">
-        <view class="popup-header">
-          <text class="popup-title">基础弹窗</text>
-        </view>
-        <view class="popup-body">
-          <text class="popup-text">这是一个基础的底部弹窗示</text>
-        </view>
-        <view class="popup-footer">
-          <view class="popup-btn" @click="confirmPopup">
-            <text class="popup-btn-text">确定</text>
-          </view>
-          <view class="popup-btn popup-btn--cancel" @click="cancelPopup">
-            <text class="popup-btn-text">取消</text>
-          </view>
-        </view>
-      </view>
-    </flyer-popup>
+		<!-- 弹窗组件 -->
+		<flyer-popup :visible="visiblePopup" :set-visible="setVisible">
+			<view class="popup-content">
+				<view class="popup-header">
+					<text class="popup-title">基础弹窗</text>
+				</view>
+				<view class="popup-body">
+					<text class="popup-text">这是一个基础的底部弹窗示例</text>
+				</view>
+				<view class="popup-footer">
+					<view class="popup-btn" @click="confirmPopup">
+						<text class="popup-btn-text">确定</text>
+					</view>
+					<view class="popup-btn popup-btn--cancel" @click="cancelPopup">
+						<text class="popup-btn-text">取消</text>
+					</view>
+				</view>
+			</view>
+		</flyer-popup>
 
-    <!-- 操作菜单弹窗 -->
-    <flyer-popup id="action-sheet">
-      <view class="action-sheet-content">
-        <view class="action-sheet-item" @click="handleEdit">
-          <text class="action-sheet-text">编辑</text>
-        </view>
-        <view class="action-sheet-item" @click="handleDelete">
-          <text class="action-sheet-text">删除</text>
-        </view>
-        <view class="action-sheet-item" @click="handleShare">
-          <text class="action-sheet-text">分享</text>
-        </view>
-        <view class="action-sheet-cancel" @click="cancelActionSheet">
-          <text class="action-sheet-cancel-text">取消</text>
-        </view>
-      </view>
-    </flyer-popup>
+		<!-- 操作菜单弹窗 -->
+		<flyer-popup id="action-sheet">
+			<view class="action-sheet-content">
+				<view class="action-sheet-item" @click="handleEdit">
+					<text class="action-sheet-text">编辑</text>
+				</view>
+				<view class="action-sheet-item" @click="handleDelete">
+					<text class="action-sheet-text">删除</text>
+				</view>
+				<view class="action-sheet-item" @click="handleShare">
+					<text class="action-sheet-text">分享</text>
+				</view>
+				<view class="action-sheet-cancel" @click="cancelActionSheet">
+					<text class="action-sheet-cancel-text">取消</text>
+				</view>
+			</view>
+		</flyer-popup>
 
-    <!-- 自定义样式弹�?-->
-    <flyer-popup id="custom-popup" :radius="32" background="#f8f9fa">
-      <view class="custom-popup-content">
-        <view class="custom-popup-header">
-          <text class="custom-popup-title">自定义样</text>
-        </view>
-        <view class="custom-popup-body">
-          <text class="custom-popup-desc">这是一个自定义样式的弹窗，圆角更大，背景为灰色</text>
-        </view>
-        <view class="custom-popup-footer">
-          <view class="custom-popup-btn" @click="confirmCustom">
-            <text class="custom-popup-btn-text">知道</text>
-          </view>
-        </view>
-      </view>
-    </flyer-popup>
+		<!-- 自定义样式弹窗 -->
+		<flyer-popup id="custom-popup" :radius="32" background="#f8f9fa">
+			<view class="custom-popup-content">
+				<view class="custom-popup-header">
+					<text class="custom-popup-title">自定义样式</text>
+				</view>
+				<view class="custom-popup-body">
+					<text class="custom-popup-desc">这是一个自定义样式的弹窗，圆角更大，背景为灰色</text>
+				</view>
+				<view class="custom-popup-footer">
+					<view class="custom-popup-btn" @click="confirmCustom">
+						<text class="custom-popup-btn-text">知道了</text>
+					</view>
+				</view>
+			</view>
+		</flyer-popup>
 
-    <!-- 彩色背景弹窗 -->
-    <flyer-popup id="color-popup" background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-      <view class="color-popup-content">
-        <text class="color-popup-title">彩色弹窗</text>
-        <text class="color-popup-desc">支持渐变背景色的弹窗</text>
-        <view class="color-popup-btn" @click="confirmColor">
-          <text class="color-popup-btn-text">关闭</text>
-        </view>
-      </view>
-    </flyer-popup>
+		<!-- 彩色背景弹窗 -->
+		<flyer-popup id="color-popup" background="linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
+			<view class="color-popup-content">
+				<text class="color-popup-title">彩色弹窗</text>
+				<text class="color-popup-desc">支持渐变背景色的弹窗</text>
+				<view class="color-popup-btn" @click="confirmColor">
+					<text class="color-popup-btn-text">关闭</text>
+				</view>
+			</view>
+		</flyer-popup>
 
-    <!-- 多实例弹-->
-    <flyer-popup id="instance-1">
-      <view class="instance-content instance-1">
-        <text class="instance-title">实例1</text>
-        <text class="instance-desc">这是第一个弹窗实</text>
-        <view class="instance-btn" @click="confirmInstance1">
-          <text class="instance-btn-text">确定</text>
-        </view>
-      </view>
-    </flyer-popup>
+		<!-- 多实例弹窗 -->
+		<flyer-popup id="instance-1">
+			<view class="instance-content instance-1">
+				<text class="instance-title">实例1</text>
+				<text class="instance-desc">这是第一个弹窗实例</text>
+				<view class="instance-btn" @click="confirmInstance1">
+					<text class="instance-btn-text">确定</text>
+				</view>
+			</view>
+		</flyer-popup>
 
-    <!-- 多实例弹-->
-    <flyer-popup id="instance-2">
-      <view class="instance-content instance-2">
-        <text class="instance-title">实例2</text>
-        <text class="instance-desc">这是第二个弹窗实</text>
-        <view class="instance-btn" @click="confirmInstance2">
-          <text class="instance-btn-text">确定</text>
-        </view>
-      </view>
-    </flyer-popup>
+		<!-- 多实例弹窗 -->
+		<flyer-popup id="instance-2">
+			<view class="instance-content instance-2">
+				<text class="instance-title">实例2</text>
+				<text class="instance-desc">这是第二个弹窗实例</text>
+				<view class="instance-btn" @click="confirmInstance2">
+					<text class="instance-btn-text">确定</text>
+				</view>
+			</view>
+		</flyer-popup>
 
-    <!-- 长内容滚动弹�?-->
-    <flyer-popup id="long-content">
-      <view class="long-content-wrapper">
-        <view class="long-content-header">
-          <text class="long-content-title">长内容弹</text>
-        </view>
-        <!-- #ifdef APP -->
-        <scroll-view class="long-content-scroll" scroll-y="true">
-        <!-- #endif -->
-          <view class="long-content-body">
-            <view v-for="(item, index) in longList" :key="index" class="long-content-item">
-              <text class="long-content-item-text">项目 {{ item }}</text>
-            </view>
-          </view>
-        <!-- #ifdef APP -->
-        </scroll-view>
-        <!-- #endif -->
-        <view class="long-content-footer">
-          <view class="long-content-btn" @click="confirmLongContent">
-            <text class="long-content-btn-text">关闭</text>
-          </view>
-        </view>
-      </view>
-    </flyer-popup>
-  </view>
+		<!-- 长内容滚动弹窗 -->
+		<flyer-popup id="long-content">
+			<view class="long-content-wrapper">
+				<view class="long-content-header">
+					<text class="long-content-title">长内容弹窗</text>
+				</view>
+				<!-- #ifdef APP -->
+				<scroll-view class="long-content-scroll" scroll-y="true">
+				<!-- #endif -->
+					<view class="long-content-body">
+						<view v-for="(item, index) in longList" :key="index" class="long-content-item">
+							<text class="long-content-item-text">项目 {{ item }}</text>
+						</view>
+					</view>
+				<!-- #ifdef APP -->
+				</scroll-view>
+				<!-- #endif -->
+				<view class="long-content-footer">
+					<view class="long-content-btn" @click="confirmLongContent">
+						<text class="long-content-btn-text">关闭</text>
+					</view>
+				</view>
+			</view>
+		</flyer-popup>
+	</view>
 </template>
 
-<script setup lang="uts">
-import { ref } from 'vue'
-import { mutations as popupMutations } from '@/components/flyer-popup/store.uts'
+<script lang="uts">
+	export default {
+		name: 'PopupExample',
 
-// 长列表数�?
-const longList = ref<number[]>([])
+		data() {
+			return {
+				longList: [] as number[],
+				visiblePopup: false as boolean
+			}
+		},
 
-// 初始化长列表
-for (let i = 1; i <= 50; i++) {
-  longList.value.push(i)
-}
+		onShow() {
+			// 初始化长列表
+			for (let i = 1; i <= 50; i++) {
+				this.longList.push(i)
+			}
+		},
 
-// 基础弹窗
-async function showBasicPopup() {
-  try {
-    const result = await popupMutations.show({
-      maskClosable: true,
-      safeArea: true
-    })
-    console.log('基础弹窗结果:', result)
-  } catch (error) {
-    console.log('弹窗被关')
-  }
-}
+		methods: {
+			setVisible(value: boolean) {
+				this.visiblePopup = value
+			},
+			// 基础弹窗
+			async showBasicPopup() {
+				this.visiblePopup = true
+			},
 
-// 操作菜单
-async function showActionSheet() {
-  try {
-    const result = await popupMutations.show({
-      id: 'action-sheet',
-      maskClosable: true
-    })
-    console.log('操作菜单结果:', result)
-  } catch (error) {
-    console.log('操作菜单被关')
-  }
-}
+			// 操作菜单
+			async showActionSheet() {
 
-// 自定义样式弹
-async function showCustomPopup() {
-  try {
-    await popupMutations.show({
-      id: 'custom-popup',
-      maskBackground: 'rgba(0, 0, 0, 0.8)',
-      maskClosable: false
-    })
-  } catch (error) {
-    console.log('自定义弹窗被关闭')
-  }
-}
+			},
 
-// 彩色背景弹窗
-async function showColorPopup() {
-  try {
-    await popupMutations.show({
-      id: 'color-popup',
-      maskClosable: true
-    })
-  } catch (error) {
-    console.log('彩色弹窗被关')
-  }
-}
+			// 自定义样式弹窗
+			async showCustomPopup() {
 
-// 多实例弹�?
-async function showMultiInstance1() {
-  try {
-    await popupMutations.show({
-      id: 'instance-1',
-      maskClosable: true
-    })
-  } catch (error) {
-    console.log('实例1被关')
-  }
-}
+			},
 
-// 多实例弹�?
-async function showMultiInstance2() {
-  try {
-    await popupMutations.show({
-      id: 'instance-2',
-      maskClosable: true
-    })
-  } catch (error) {
-    console.log('实例2被关')
-  }
-}
+			// 彩色背景弹窗
+			async showColorPopup() {
 
-// 长内容弹�?
-async function showLongContent() {
-  try {
-    await popupMutations.show({
-      id: 'long-content',
-      maskClosable: true
-    })
-  } catch (error) {
-    console.log('长内容弹窗被关闭')
-  }
-}
+			},
 
-// 基础弹窗事件处理
-function confirmPopup() {
-  popupMutations.confirm()
-  uni.showToast({ title: '确定操作', icon: 'success' })
-}
+			// 多实例弹窗1
+			async showMultiInstance1() {
 
-function cancelPopup() {
-  popupMutations.cancel()
-}
+			},
 
-// 操作菜单事件处理
-function handleEdit() {
-  popupMutations.confirm()
-  uni.showToast({ title: '编辑操作', icon: 'success' })
-}
+			// 多实例弹窗2
+			async showMultiInstance2() {
 
-function handleDelete() {
-  popupMutations.confirm()
-  uni.showToast({ title: '删除操作', icon: 'success' })
-}
+			},
 
-function handleShare() {
-  popupMutations.confirm()
-  uni.showToast({ title: '分享操作', icon: 'success' })
-}
+			// 长内容弹窗
+			async showLongContent() {
 
-function cancelActionSheet() {
-  popupMutations.cancel()
-}
+			},
 
-// 自定义弹窗事件处�?
-function confirmCustom() {
-  popupMutations.confirm()
-}
+			// 基础弹窗事件处理
+			confirmPopup() {
+				uni.showToast({ title: '确定操作', icon: 'success' })
+			},
 
-function confirmColor() {
-  popupMutations.confirm()
-}
+			cancelPopup() {
+			},
 
-// 多实例事件处�?
-function confirmInstance1() {
-  popupMutations.confirm()
-  uni.showToast({ title: '实例1确认', icon: 'success' })
-}
+			// 操作菜单事件处理
+			handleEdit() {
+				uni.showToast({ title: '编辑操作', icon: 'success' })
+			},
 
-function confirmInstance2() {
-  popupMutations.confirm()
-  uni.showToast({ title: '实例2确认', icon: 'success' })
-}
+			handleDelete() {
+				uni.showToast({ title: '删除操作', icon: 'success' })
+			},
 
-// 长内容事件处�?
-function confirmLongContent() {
-  popupMutations.confirm()
-}
+			handleShare() {
+				uni.showToast({ title: '分享操作', icon: 'success' })
+			},
+
+			cancelActionSheet() {
+			},
+
+			// 自定义弹窗事件处理
+			confirmCustom() {
+			},
+
+			confirmColor() {
+			},
+
+			// 多实例事件处理
+			confirmInstance1() {
+				uni.showToast({ title: '实例1确认', icon: 'success' })
+			},
+
+			confirmInstance2() {
+				uni.showToast({ title: '实例2确认', icon: 'success' })
+			},
+
+			// 长内容事件处理
+			confirmLongContent() {
+			}
+		},
+	}
 </script>
 
 <style>
-.demo-container {
-  flex: 1;
-  background-color: #f7f8fa;
-}
-
-.demo-scroll {
-  flex: 1;
-}
-
-.demo-content {
-  padding: 16px;
-}
-
-.demo-header {
-  padding: 24px 0;
-  text-align: center;
-}
-
-.demo-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #323233;
-  margin-bottom: 8px;
-}
-
-.demo-desc {
-  font-size: 14px;
-  color: #969799;
-}
-
-.demo-section {
-  margin-bottom: 24px;
-}
-
-.demo-section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #323233;
-  margin-bottom: 12px;
-}
-
-.demo-actions {
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.demo-actions > .demo-btn {
-  margin-right: 12px;
-  margin-bottom: 12px;
-}
-
-.demo-actions > .demo-btn:last-child {
-  margin-right: 0;
-}
-
-.demo-btn {
-  flex: 1;
-  min-width: 120px;
-  height: 44px;
-  background-color: #1989fa;
-  border-radius: 6px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.demo-btn:active {
-  opacity: 0.8;
-}
-
-.demo-btn-text {
-  font-size: 14px;
-  color: #ffffff;
-  font-weight: 400;
-}
-
-/* 基础弹窗样式 */
-.popup-content {
-  padding: 20px;
-  background-color: #ffffff;
-}
-
-.popup-header {
-  padding-bottom: 16px;
-  border-bottom-width: 1px;
-  border-bottom-color: #ebedf0;
-}
-
-.popup-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #323233;
-  text-align: center;
-}
-
-.popup-body {
-  padding: 20px 0;
-}
-
-.popup-text {
-  font-size: 14px;
-  color: #646566;
-  text-align: center;
-  line-height: 20px;
-}
-
-.popup-footer {
-  flex-direction: row;
-}
-
-.popup-footer > .popup-btn {
-  margin-right: 12px;
-}
-
-.popup-footer > .popup-btn:last-child {
-  margin-right: 0;
-}
-
-.popup-btn {
-  flex: 1;
-  height: 40px;
-  background-color: #1989fa;
-  border-radius: 6px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.popup-btn--cancel {
-  background-color: #f7f8fa;
-}
-
-.popup-btn:active {
-  opacity: 0.8;
-}
-
-.popup-btn-text {
-  font-size: 14px;
-  color: #ffffff;
-  font-weight: 400;
-}
-
-.popup-btn--cancel .popup-btn-text {
-  color: #646566;
-}
-
-/* 操作菜单样式 */
-.action-sheet-content {
-  background-color: #ffffff;
-}
-
-.action-sheet-item {
-  height: 50px;
-  border-bottom-width: 1px;
-  border-bottom-color: #ebedf0;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-sheet-item:active {
-  background-color: #f7f8fa;
-}
-
-.action-sheet-text {
-  font-size: 16px;
-  color: #323233;
-}
-
-.action-sheet-cancel {
-  height: 50px;
-  background-color: #f7f8fa;
-  margin-top: 8px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.action-sheet-cancel:active {
-  background-color: #ebedf0;
-}
-
-.action-sheet-cancel-text {
-  font-size: 16px;
-  color: #969799;
-}
-
-/* 自定义弹窗样�?*/
-.custom-popup-content {
-  padding: 24px;
-  background-color: transparent;
-}
-
-.custom-popup-header {
-  margin-bottom: 16px;
-}
-
-.custom-popup-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #323233;
-  text-align: center;
-}
-
-.custom-popup-body {
-  margin-bottom: 20px;
-}
-
-.custom-popup-desc {
-  font-size: 14px;
-  color: #646566;
-  text-align: center;
-  line-height: 20px;
-}
-
-.custom-popup-footer {
-  align-items: center;
-}
-
-.custom-popup-btn {
-  width: 120px;
-  height: 40px;
-  background-color: #1989fa;
-  border-radius: 20px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-popup-btn:active {
-  opacity: 0.8;
-}
-
-.custom-popup-btn-text {
-  font-size: 14px;
-  color: #ffffff;
-  font-weight: 400;
-}
-
-/* 彩色弹窗样式 */
-.color-popup-content {
-  padding: 32px 24px;
-  align-items: center;
-}
-
-.color-popup-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 12px;
-}
-
-.color-popup-desc {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 24px;
-}
-
-.color-popup-btn {
-  width: 100px;
-  height: 36px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 18px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.color-popup-btn:active {
-  opacity: 0.8;
-}
-
-.color-popup-btn-text {
-  font-size: 14px;
-  color: #ffffff;
-}
-
-/* 多实例样�?*/
-.instance-content {
-  padding: 24px;
-  align-items: center;
-  background-color: #ffffff;
-}
-
-.instance-1 {
-  background-color: #e8f5ff;
-}
-
-.instance-2 {
-  background-color: #fff2e8;
-}
-
-.instance-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: #323233;
-  margin-bottom: 12px;
-}
-
-.instance-desc {
-  font-size: 14px;
-  color: #646566;
-  margin-bottom: 20px;
-}
-
-.instance-btn {
-  width: 100px;
-  height: 36px;
-  background-color: #1989fa;
-  border-radius: 18px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.instance-btn:active {
-  opacity: 0.8;
-}
-
-.instance-btn-text {
-  font-size: 14px;
-  color: #ffffff;
-}
-
-/* 长内容弹窗样�?*/
-.long-content-wrapper {
-  background-color: #ffffff;
-  max-height: 60vh;
-}
-
-.long-content-header {
-  padding: 20px 20px 16px;
-  border-bottom-width: 1px;
-  border-bottom-color: #ebedf0;
-}
-
-.long-content-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: #323233;
-  text-align: center;
-}
-
-.long-content-scroll {
-  max-height: 300px;
-}
-
-.long-content-body {
-  padding: 0 20px;
-}
-
-.long-content-item {
-  height: 44px;
-  border-bottom-width: 1px;
-  border-bottom-color: #f7f8fa;
-  flex-direction: row;
-  align-items: center;
-}
-
-.long-content-item-text {
-  font-size: 14px;
-  color: #646566;
-}
-
-.long-content-footer {
-  padding: 16px 20px 20px;
-  border-top-width: 1px;
-  border-top-color: #ebedf0;
-}
-
-.long-content-btn {
-  height: 40px;
-  background-color: #1989fa;
-  border-radius: 6px;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.long-content-btn:active {
-  opacity: 0.8;
-}
-
-.long-content-btn-text {
-  font-size: 14px;
-  color: #ffffff;
-  font-weight: 400;
-}
+	.demo-container {
+		flex: 1;
+		background-color: #f7f8fa;
+	}
+
+	.demo-scroll {
+		flex: 1;
+	}
+
+	.demo-content {
+		padding: 16px;
+	}
+
+	.demo-header {
+		padding: 24px 0;
+		text-align: center;
+	}
+
+	.demo-title {
+		font-size: 20px;
+		font-weight: 700;
+		color: #323233;
+		margin-bottom: 8px;
+	}
+
+	.demo-desc {
+		font-size: 14px;
+		color: #969799;
+	}
+
+	.demo-section {
+		margin-bottom: 24px;
+	}
+
+	.demo-section-title {
+		font-size: 16px;
+		font-weight: 700;
+		color: #323233;
+		margin-bottom: 12px;
+	}
+
+	.demo-actions {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.demo-actions>.demo-btn {
+		margin-right: 12px;
+		margin-bottom: 12px;
+	}
+
+	.demo-btn {
+		flex: 1;
+		min-width: 120px;
+		height: 44px;
+		background-color: #1989fa;
+		border-radius: 6px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.demo-btn-text {
+		font-size: 14px;
+		color: #ffffff;
+		font-weight: 400;
+	}
+
+	/* 基础弹窗样式 */
+	.popup-content {
+		padding: 20px;
+		background-color: #ffffff;
+	}
+
+	.popup-header {
+		padding-bottom: 16px;
+		border-bottom-width: 1px;
+		border-bottom-color: #ebedf0;
+	}
+
+	.popup-title {
+		font-size: 16px;
+		font-weight: 700;
+		color: #323233;
+		text-align: center;
+	}
+
+	.popup-body {
+		padding: 20px 0;
+	}
+
+	.popup-text {
+		font-size: 14px;
+		color: #646566;
+		text-align: center;
+		line-height: 20px;
+	}
+
+	.popup-footer {
+		flex-direction: row;
+	}
+
+	.popup-footer>.popup-btn {
+		margin-right: 12px;
+	}
+
+	.popup-btn {
+		flex: 1;
+		height: 40px;
+		background-color: #1989fa;
+		border-radius: 6px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.popup-btn--cancel {
+		background-color: #f7f8fa;
+	}
+
+	.popup-btn-text {
+		font-size: 14px;
+		color: #ffffff;
+		font-weight: 400;
+	}
+
+	.popup-btn--cancel .popup-btn-text {
+		color: #646566;
+	}
+
+	/* 操作菜单样式 */
+	.action-sheet-content {
+		background-color: #ffffff;
+	}
+
+	.action-sheet-item {
+		height: 50px;
+		border-bottom-width: 1px;
+		border-bottom-color: #ebedf0;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.action-sheet-text {
+		font-size: 16px;
+		color: #323233;
+	}
+
+	.action-sheet-cancel {
+		height: 50px;
+		background-color: #f7f8fa;
+		margin-top: 8px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.action-sheet-cancel-text {
+		font-size: 16px;
+		color: #969799;
+	}
+
+	/* 自定义弹窗样�?*/
+	.custom-popup-content {
+		padding: 24px;
+		background-color: transparent;
+	}
+
+	.custom-popup-header {
+		margin-bottom: 16px;
+	}
+
+	.custom-popup-title {
+		font-size: 18px;
+		font-weight: 700;
+		color: #323233;
+		text-align: center;
+	}
+
+	.custom-popup-body {
+		margin-bottom: 20px;
+	}
+
+	.custom-popup-desc {
+		font-size: 14px;
+		color: #646566;
+		text-align: center;
+		line-height: 20px;
+	}
+
+	.custom-popup-footer {
+		align-items: center;
+	}
+
+	.custom-popup-btn {
+		width: 120px;
+		height: 40px;
+		background-color: #1989fa;
+		border-radius: 20px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.custom-popup-btn-text {
+		font-size: 14px;
+		color: #ffffff;
+		font-weight: 400;
+	}
+
+	/* 彩色弹窗样式 */
+	.color-popup-content {
+		padding: 32px 24px;
+		align-items: center;
+	}
+
+	.color-popup-title {
+		font-size: 20px;
+		font-weight: 700;
+		color: #ffffff;
+		margin-bottom: 12px;
+	}
+
+	.color-popup-desc {
+		font-size: 14px;
+		color: rgba(255, 255, 255, 0.8);
+		margin-bottom: 24px;
+	}
+
+	.color-popup-btn {
+		width: 100px;
+		height: 36px;
+		background-color: rgba(255, 255, 255, 0.2);
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		border-radius: 18px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.color-popup-btn-text {
+		font-size: 14px;
+		color: #ffffff;
+	}
+
+	/* 多实例样�?*/
+	.instance-content {
+		padding: 24px;
+		align-items: center;
+		background-color: #ffffff;
+	}
+
+	.instance-1 {
+		background-color: #e8f5ff;
+	}
+
+	.instance-2 {
+		background-color: #fff2e8;
+	}
+
+	.instance-title {
+		font-size: 18px;
+		font-weight: 700;
+		color: #323233;
+		margin-bottom: 12px;
+	}
+
+	.instance-desc {
+		font-size: 14px;
+		color: #646566;
+		margin-bottom: 20px;
+	}
+
+	.instance-btn {
+		width: 100px;
+		height: 36px;
+		background-color: #1989fa;
+		border-radius: 18px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.instance-btn-text {
+		font-size: 14px;
+		color: #ffffff;
+	}
+
+	/* 长内容弹窗样式 */
+	.long-content-wrapper {
+		background-color: #ffffff;
+		max-height: 400px;
+	}
+
+	.long-content-header {
+		padding: 20px 20px 16px;
+		border-bottom-width: 1px;
+		border-bottom-color: #ebedf0;
+	}
+
+	.long-content-title {
+		font-size: 16px;
+		font-weight: 700;
+		color: #323233;
+		text-align: center;
+	}
+
+	.long-content-scroll {
+		max-height: 300px;
+	}
+
+	.long-content-body {
+		padding: 0 20px;
+	}
+
+	.long-content-item {
+		height: 44px;
+		border-bottom-width: 1px;
+		border-bottom-color: #f7f8fa;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.long-content-item-text {
+		font-size: 14px;
+		color: #646566;
+	}
+
+	.long-content-footer {
+		padding: 16px 20px 20px;
+		border-top-width: 1px;
+		border-top-color: #ebedf0;
+	}
+
+	.long-content-btn {
+		height: 40px;
+		background-color: #1989fa;
+		border-radius: 6px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.long-content-btn-text {
+		font-size: 14px;
+		color: #ffffff;
+		font-weight: 400;
+	}
 </style>

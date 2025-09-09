@@ -19,16 +19,16 @@ export type DialogConfig = {
 // 定义一个大写的 State 类型
 export type State = {
   visible: boolean
-  title?: string
+  title: string | null
   content: string
   confirmText: string
   cancelText: string
   showCancel: boolean
   zIndex: number
-  targetId?: string
+  targetId: string | null
   maskClosable: boolean
-  resolvePromise?: ((value: boolean) => void)
-  rejectPromise?: ((reason?: any) => void)
+  resolvePromise: ((value: boolean) => void) | null
+  rejectPromise: ((reason: string | null) => void) | null
 }
 
 // 实例化为响应式 state
