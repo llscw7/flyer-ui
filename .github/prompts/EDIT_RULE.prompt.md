@@ -551,9 +551,10 @@ const closeIcon = String.fromCharCode(0xe005)
 - `white-space` 只支持 `<text>|<button>`。
 - `font-size|text-align|color` 只支持 `<text>|<button>|<input>|<textarea>`。
 - `text-align` 只支持 `<text>|<button>|<input>|<textarea>`。
+- `font-weight` 只包含 `normal`|`bold`|`400`|`700`
 - `color`​ 不支持 `inherit`。
-- 不支持 `vh`、`vw` 等视窗单位，使用 `rpx` 或 `px`。
-- 不支持百分比单位 `%`，使用具体像素值。
+- **CSS 单位支持**：仅支持 `px`、`rpx`、`%` 三种单位，不支持 `vh`、`vw`、`em`、`rem`、`vmin`、`vmax` 等其他单位。
+- **推荐使用 `rpx`**：rpx 是响应式像素单位，能自动适配不同屏幕尺寸，是 uni-app x 的首选单位。
 
 ### 内联样式规范
 - **禁止使用对象语法的内联样式**，只支持字符串拼接方式：
@@ -646,7 +647,7 @@ export default {
 - `PropType validation failed`: 复杂对象数组props必须声明为Array as PropType<UTSJSONObject[]>。
 - `组件view不支持事件`：某些事件如 `touchmove.stop.prevent` 在view组件中不支持。
 - `Unsupported Pseudo-class selector`：CSS中不支持伪类选择器如 `:active`、`:hover`。
-- `Unsupported unit`：CSS中不支持 `vh`、`vw`、`%` 等单位，使用 `rpx` 或 `px`。
+- `Unsupported unit`：CSS中不支持 `vh`、`vw`、`em`、`rem` 等单位，仅支持 `px`、`rpx`、`%`。
 - `Unsupported style object syntax`：内联样式不支持对象语法如 `:style="{ color: red }"`，必须使用字符串拼接。
 - `Style property format error`：内联样式属性格式错误，必须使用 kebab-case 并带单位。
 - `Text content not allowed in view`：view 标签中不能直接放置文字，必须使用 text 标签包裹。
@@ -675,7 +676,7 @@ export default {
 - [ ] Promise 回调使用安全导航或显式null检查
 - [ ] 避免对象方法自引用，使用内部辅助函数
 - [ ] CSS 只使用类选择器，避免伪类选择器
-- [ ] CSS 单位使用 `rpx` 或 `px`，避免 `vh`、`vw`、`%`
+- [ ] CSS 单位仅使用 `px`、`rpx`、`%`，避免 `vh`、`vw`、`em`、`rem` 等不支持的单位
 - [ ] **内联样式使用字符串拼接，避免对象语法 `:style="{ }"`**
 - [ ] **内联样式属性使用 kebab-case 格式并带单位**
 - [ ] **文字内容使用 `<text>` 标签包裹，不能直接在 `<view>` 中放置文字**

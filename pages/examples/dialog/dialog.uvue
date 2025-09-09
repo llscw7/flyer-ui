@@ -215,17 +215,8 @@ export default {
 		margin-left: 4px;
 	}
 
-	/* 按钮�?*/
 	.button-group {
 		flex-direction: column;
-	}
-
-	.button-group>* {
-		margin-bottom: 12px;
-	}
-
-	.button-group>*:last-child {
-		margin-bottom: 0;
 	}
 
 	/* 结果显示 */
