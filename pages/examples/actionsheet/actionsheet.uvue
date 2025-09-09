@@ -34,8 +34,8 @@ export default {
 			// 基础用法
 			basicItems: [
 				{ text: '选项一', color: '#FF0000', size: 32 },
-				{ text: '选项二', color: '#00FF00', size: 32 },
-				{ text: '选项三', color: '#0000FF', size: 32 }
+				{ text: '选项二',  },
+				{ text: '选项三', size: 40 }
 			],
 			visible: false,
 			simpleList: [

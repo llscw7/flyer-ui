@@ -1,33 +1,28 @@
 <template>
-	<view class="flyer-actionsheet__mask" :class="{ 'flyer-actionsheet__mask-show': shouldShow }"
-		@tap="handleClickMask"></view>
-	<view class="flyer-actionsheet__wrap flyer-as__bg-light flyer-actionsheet__radius"
-		:class="{ 'flyer-actionsheet__show': shouldShow}"
-		ref="fui_as_ani" :style="{ zIndex: zIndex }">
-		<text class="flyer-actionsheet__tips flyer-as__btn-light flyer-actionsheet__radius flyer-as__divider-light"
-			:style="'color:' + color + ';font-size:' + size + 'rpx'" v-if="tips">{{ tips }}</text>
-		<view :class="{ 'flyer-actionsheet__operate-box': isCancel }">
-				<text 
-					v-for="(item, index) in itemList" 
-					:key="index" 
-					@tap="handleClickItem(index)" 
-					:style="'color:' + item.color + ';font-size: ' + item.size + 'rpx'" 
+	<view v-if="shouldShow">
+		<view class="flyer-actionsheet__mask" :class="{ 'flyer-actionsheet__mask-show': shouldShow }"
+			@tap="handleClickMask" :style="'z-index: ' + zIndex"></view>
+		<view class="flyer-actionsheet__wrap flyer-as__bg-light flyer-actionsheet__radius"
+			:class="{ 'flyer-actionsheet__show': shouldShow}" :style="'z-index: ' + zIndex + 1">
+			<text class="flyer-actionsheet__tips flyer-as__btn-light flyer-actionsheet__radius flyer-as__divider-light"
+				:style="'color:' + color + ';font-size:' + size + 'rpx'" v-if="tips">{{ tips }}</text>
+			<view :class="{ 'flyer-actionsheet__operate-box': isCancel }">
+				<text v-for="(item, index) in itemList" :key="index" @tap="handleClickItem(index)"
+					:style="'color:' + (item.color == null ? itemColor : item.color) + ';font-size: ' + (item.size == null ? itemSize : item.size) + 'rpx'"
 					class="flyer-actionsheet__btn flyer-as__btn-light"
-					:class="{'flyer-as__safe-weex': safeAreaClass(index)}"
-				>{{ item.text }}</text>
+					:class="{'flyer-as__safe-weex': safeAreaClass(index)}">{{ item.text }}</text>
+			</view>
+			<text :style="'color:' + itemColor + ';font-size: ' + cancelSize + 'rpx'"
+				class="flyer-actionsheet__btn flyer-as__btn-light" :class="{ 'flyer-as__safe-weex': safeArea }"
+				v-if="isCancel" @tap="handleClickCancel">取消</text>
 		</view>
-		<text :style="'color:' + itemColor + ';font-size: ' + cancelSize + 'rpx'"
-			class="flyer-actionsheet__btn flyer-as__btn-light"
-			:class="{ 'flyer-as__safe-weex': safeArea }"
-			v-if="isCancel" @tap="handleClickCancel">取消</text>
 	</view>
 </template>
-
 
 <script lang="uts">
 	export default {
 		name: 'FlyerActionsheet',
-
+		emits: ['click', 'cancel'],
 		props: {
 			visible: {
 				type: Boolean,
@@ -83,7 +78,7 @@
 			},
 			zIndex: {
 				type: Number,
-				default: 996
+				default: 99
 			},
 			//是否适配底部安全区
 			safeArea: {
@@ -113,21 +108,21 @@
 		},
 
 		methods: {
-			btnLast(index: number): boolean {
+			btnLast(index : number) : boolean {
 				return !this.isCancel && index == this.itemList!!.length - 1
 			},
-			safeAreaClass(index: number): boolean {
+			safeAreaClass(index : number) : boolean {
 				let len = 0
-				if(typeof this.itemList!!.length == 'number') {
+				if (typeof this.itemList!!.length == 'number') {
 					len = this.itemList!!.length - 1
 				}
 				return !this.isCancel && index == len && this.safeArea
 			},
-			dividerLight(index: number): boolean {
-				if(index == 0) {
+			dividerLight(index : number) : boolean {
+				if (index == 0) {
 					return false
 				}
-				if(this.tips == null || this.tips === "") {
+				if (this.tips == null || this.tips === "") {
 					return false
 				}
 				return true
@@ -137,11 +132,11 @@
 				if (!this.maskClosable) return;
 				this.handleClickCancel();
 			},
-			handleClickItem(index: number) {
+			handleClickItem(index : number) {
 				console.log('点击了第' + index + '个按钮');
 				if (!this.visible) return;
 
-				if(typeof this.itemList!![index] === 'object') {
+				if (typeof this.itemList!![index] === 'object') {
 					this.$emit('click', {
 						index: index,
 						...this.itemList!![index]
@@ -150,104 +145,96 @@
 			},
 			handleClickCancel() {
 				this.setVisible(false);
+				this.$emit('cancel');
 			},
-		}
+		},
 	}
 </script>
 
 <style scoped>
-.flyer-actionsheet__wrap {
-	width: 100%;
-	visibility: hidden;
-	min-height: 100rpx;
-	position: fixed;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	transform-origin: center center;
-	transform: translate3d(0, 100%, 0);
-	transition: all 0.25s ease-in-out;
-}
+	.flyer-actionsheet__wrap {
+		width: 100%;
+		visibility: hidden;
+		min-height: 100rpx;
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		transform-origin: center center;
+		transform: translate(0, 100%);
+		transition: all 0.25s ease-in-out;
+	}
 
-.flyer-as__bg-light {
-	background-color: #F8F8F8;
-}
+	.flyer-as__bg-light {
+		background-color: #F8F8F8;
+	}
 
-.flyer-as__bg-dark {
-	background-color: #111111;
-}
+	.flyer-actionsheet__radius {
+		border-top-left-radius: 24rpx;
+		border-top-right-radius: 24rpx;
+	}
 
-.flyer-actionsheet__radius {
-	border-top-left-radius: 24rpx;
-	border-top-right-radius: 24rpx;
-}
+	.flyer-actionsheet__show {
+		transform: translate(0, 0);
+		visibility: visible;
+	}
 
-.flyer-actionsheet__show {
-	transform: translate3d(0, 0, 0);
-	visibility: visible;
-}
+	.flyer-actionsheet__tips {
+		flex: 1;
+		padding: 40rpx 60rpx;
+		text-align: center;
+		font-weight: normal;
+	}
 
-.flyer-actionsheet__tips {
-	flex: 1;
-	padding: 40rpx 60rpx;
-	text-align: center;
-	font-weight: normal;
-}
+	.flyer-as__btn-light {
+		background-color: #FFFFFF;
+	}
 
-.flyer-as__btn-light {
-	background-color: #FFFFFF;
-}
+	.flyer-actionsheet__operate-box {
+		padding-bottom: 12rpx;
+	}
 
-.flyer-as__btn-dark {
-	background-color: #222222;
-}
+	.flyer-actionsheet__btn {
+		height: 100rpx;
+		line-height: 100rpx;
+		flex: 1;
+		text-align: center;
+		font-weight: normal;
+		position: relative;
+		border-bottom-width: 0.5px;
+		border-bottom-style: solid;
+		border-bottom-color: #EEEEEE;
+	}
 
-.flyer-actionsheet__operate-box {
-	padding-bottom: 12rpx;
-}
+	.flyer-actionsheet__btn:active {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
 
-.flyer-actionsheet__btn {
-	height: 100rpx;
-	line-height: 100rpx;
-	flex: 1;
-	text-align: center;
-	/* font-size: 32rpx; */
-	font-weight: normal;
-	position: relative;
-	border-bottom-width: 0.5px;
-	border-bottom-style: solid;
-	border-bottom-color: #EEEEEE;
-}
+	.flyer-as__divider-light {
+		border-bottom-width: 0.5px;
+		border-bottom-style: solid;
+		border-bottom-color: #EEEEEE;
+	}
 
-.flyer-actionsheet__btn:active {
-	background-color: rgba(0, 0, 0, 0.2);
-}
+	.flyer-as__safe-weex {
+		height: 168rpx;
+		padding-bottom: 34px;
+	}
 
-.flyer-as__divider-light {
-	border-bottom-width: 0.5px;
-	border-bottom-style: solid;
-	border-bottom-color: #EEEEEE;
-}
+	.flyer-actionsheet__mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.3);
+		transition: opacity 0.3s ease-in-out;
+		opacity: 0;
+		visibility: hidden;
+	}
 
-.flyer-as__safe-weex {
-	height: 168rpx;
-	padding-bottom: 34px;
-}
-
-.flyer-actionsheet__mask {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.3);
-	transition: opacity 0.3s ease-in-out;
-	opacity: 0;
-	visibility: hidden;
-}
-
-.flyer-actionsheet__mask-show {
-	visibility: visible;
-	opacity: 1;
-}
+	.flyer-actionsheet__mask-show {
+		visibility: visible;
+		opacity: 1;
+	}
 </style>
