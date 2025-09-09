@@ -1,9 +1,8 @@
 <template>
-	<view v-if="shouldShow">
 		<view class="flyer-actionsheet__mask" :class="{ 'flyer-actionsheet__mask-show': shouldShow }"
 			@tap="handleClickMask" :style="'z-index: ' + zIndex"></view>
 		<view class="flyer-actionsheet__wrap flyer-as__bg-light flyer-actionsheet__radius"
-			:class="{ 'flyer-actionsheet__show': shouldShow}" :style="'z-index: ' + zIndex + 1">
+			:class="{ 'flyer-actionsheet__show': shouldShow}" :style="'z-index: ' + (zIndex + 1)">
 			<text class="flyer-actionsheet__tips flyer-as__btn-light flyer-actionsheet__radius flyer-as__divider-light"
 				:style="'color:' + color + ';font-size:' + size + 'rpx'" v-if="tips">{{ tips }}</text>
 			<view :class="{ 'flyer-actionsheet__operate-box': isCancel }">
@@ -16,7 +15,6 @@
 				class="flyer-actionsheet__btn flyer-as__btn-light" :class="{ 'flyer-as__safe-weex': safeArea }"
 				v-if="isCancel" @tap="handleClickCancel">取消</text>
 		</view>
-	</view>
 </template>
 
 <script lang="uts">
@@ -129,6 +127,7 @@
 			},
 			// 事件处理函数
 			handleClickMask() {
+				console.log('点击了遮罩');
 				if (!this.maskClosable) return;
 				this.handleClickCancel();
 			},
@@ -154,7 +153,6 @@
 <style scoped>
 	.flyer-actionsheet__wrap {
 		width: 100%;
-		visibility: hidden;
 		min-height: 100rpx;
 		position: fixed;
 		left: 0;
@@ -162,7 +160,11 @@
 		bottom: 0;
 		transform-origin: center center;
 		transform: translate(0, 100%);
-		transition: all 0.25s ease-in-out;
+		transition: all 0.2s ease;
+	}
+
+	.flyer-actionsheet__show {
+		transform: translate(0, 0);
 	}
 
 	.flyer-as__bg-light {
@@ -172,11 +174,6 @@
 	.flyer-actionsheet__radius {
 		border-top-left-radius: 24rpx;
 		border-top-right-radius: 24rpx;
-	}
-
-	.flyer-actionsheet__show {
-		transform: translate(0, 0);
-		visibility: visible;
 	}
 
 	.flyer-actionsheet__tips {

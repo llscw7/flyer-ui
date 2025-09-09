@@ -288,7 +288,201 @@ methods: {
 }
 ```
 
-### 3. 状态管理事件
+### 3. UTS 事件数据类型安全处理
+
+在 UTS 中处理事件数据时必须进行类型检查，以确保类型安全：
+
+```uts
+// ❌ 错误的事件处理方式
+methods: {
+  handleNoCancelClick2(data: any): void {
+    console.log('无取消按钮点击:', data)
+    this.setNoCancelVisible(false)
+    uni.showToast({
+      title: '选择了: ' + data.text, // 危险：直接访问 any 类型的属性
+      icon: 'none'
+    })
+  }
+}
+
+// ✅ 正确的事件处理方式
+methods: {
+  handleNoCancelClick(data: UTSJSONObject): void {
+    console.log('无取消按钮点击:', data)
+    this.setNoCancelVisible(false)
+    
+    // 必须进行类型检查
+    if (typeof data.text == 'string') {
+      uni.showToast({
+        title: '选择了: ' + data.text,
+        icon: 'none'
+      })
+    }
+  },
+  
+  // ✅ 更完整的类型检查示例
+  handleComplexClick(data: UTSJSONObject): void {
+    console.log('复杂事件处理:', data)
+    
+    // 类型安全的属性访问
+    const text = data['text']
+    const value = data['value']
+    const index = data['index']
+    
+    if (typeof text == 'string') {
+      console.log('按钮文本:', text)
+    }
+    
+    if (typeof value == 'string') {
+      console.log('按钮值:', value)
+    }
+    
+    if (typeof index == 'number') {
+      console.log('按钮索引:', index)
+    }
+    
+    // 安全的 Toast 显示
+    if (typeof text == 'string') {
+      uni.showToast({
+        title: '操作: ' + text,
+        icon: 'none'
+      })
+    }
+  },
+  
+  // ✅ 处理可选属性的安全方式
+  handleItemWithOptionalProps(data: UTSJSONObject): void {
+    // 检查必需属性
+    if (typeof data.text != 'string') {
+      console.warn('事件数据缺少 text 属性')
+      return
+    }
+    
+    // 处理可选属性
+    const color = data['color']
+    const disabled = data['disabled']
+    
+    let message = data.text
+    
+    if (typeof color == 'string') {
+      message += ' (颜色: ' + color + ')'
+    }
+    
+    if (typeof disabled == 'boolean' && disabled) {
+      message += ' [已禁用]'
+    }
+    
+    uni.showToast({
+      title: message,
+      icon: 'none'
+    })
+  }
+}
+```
+
+### 4. 事件数据验证工具函数
+
+为了提高代码复用性，可以创建事件数据验证的工具函数：
+
+```uts
+// 事件数据验证工具
+methods: {
+  // 验证基本事件数据结构
+  validateEventData(data: UTSJSONObject): boolean {
+    if (typeof data.text != 'string') {
+      console.warn('事件数据验证失败: 缺少有效的 text 属性')
+      return false
+    }
+    return true
+  },
+  
+  // 安全获取字符串属性
+  getStringProp(data: UTSJSONObject, key: string, defaultValue: string = ''): string {
+    const value = data[key]
+    return typeof value == 'string' ? value : defaultValue
+  },
+  
+  // 安全获取数字属性
+  getNumberProp(data: UTSJSONObject, key: string, defaultValue: number = 0): number {
+    const value = data[key]
+    return typeof value == 'number' ? value : defaultValue
+  },
+  
+  // 安全获取布尔属性
+  getBooleanProp(data: UTSJSONObject, key: string, defaultValue: boolean = false): boolean {
+    const value = data[key]
+    return typeof value == 'boolean' ? value : defaultValue
+  },
+  
+  // 使用验证工具的示例
+  handleSafeClick(data: UTSJSONObject): void {
+    if (!this.validateEventData(data)) {
+      return
+    }
+    
+    const text = this.getStringProp(data, 'text')
+    const index = this.getNumberProp(data, 'index')
+    const disabled = this.getBooleanProp(data, 'disabled')
+    
+    if (disabled) {
+      uni.showToast({
+        title: '操作已禁用',
+        icon: 'none'
+      })
+      return
+    }
+    
+    console.log(`点击了第 ${index} 个按钮: ${text}`)
+    
+    uni.showToast({
+      title: '选择了: ' + text,
+      icon: 'success'
+    })
+  }
+}
+```
+
+### 5. 类型安全的最佳实践总结
+
+```uts
+// ✅ UTS 事件处理最佳实践
+methods: {
+  // 1. 始终使用 UTSJSONObject 而不是 any
+  handleEvent(data: UTSJSONObject): void { /* ... */ },
+  
+  // 2. 必须进行 typeof 检查
+  safeAccess(data: UTSJSONObject): void {
+    if (typeof data.prop == 'string') {
+      // 安全使用
+    }
+  },
+  
+  // 3. 提供默认值和错误处理
+  robustHandler(data: UTSJSONObject): void {
+    const text = typeof data.text == 'string' ? data.text : '未知操作'
+    const index = typeof data.index == 'number' ? data.index : -1
+    
+    if (index < 0) {
+      console.warn('无效的索引值')
+      return
+    }
+    
+    // 安全的业务逻辑
+  },
+  
+  // 4. 使用工具函数简化代码
+  simplifiedHandler(data: UTSJSONObject): void {
+    if (!this.validateEventData(data)) return
+    
+    const text = this.getStringProp(data, 'text')
+    const value = this.getStringProp(data, 'value')
+    
+    // 简洁的业务逻辑
+  }
+}
+```
+
+### 6. 状态管理事件
 ```uts
 // ✅ 组件状态管理模式
 props: {
@@ -814,8 +1008,38 @@ methods: {
 1. **组件设计**: 单一职责、高内聚、低耦合
 2. **Props 设计**: 类型安全、默认值合理、命名清晰
 3. **事件设计**: 数据完整、命名统一、时机准确
-4. **样式设计**: 响应式优先、性能考虑、维护性好
-5. **测试策略**: 功能全面、边界覆盖、性能监控
-6. **文档维护**: 及时更新、示例丰富、说明清晰
+4. **类型安全**: 使用 UTSJSONObject 替代 any，必须进行 typeof 检查
+5. **事件处理**: 验证事件数据结构，提供默认值和错误处理
+6. **样式设计**: 响应式优先、性能考虑、维护性好
+7. **测试策略**: 功能全面、边界覆盖、性能监控
+8. **文档维护**: 及时更新、示例丰富、说明清晰
+
+## 🚨 UTS 开发注意事项
+
+### 类型安全核心原则
+1. **禁用 any 类型**: 使用 UTSJSONObject 替代 any
+2. **强制类型检查**: 使用 typeof 检查属性类型
+3. **提供默认值**: 处理属性可能不存在的情况
+4. **错误处理**: 验证数据结构的完整性
+5. **工具函数**: 创建可复用的类型检查工具
+
+### 常见错误模式
+```uts
+// ❌ 危险的做法
+function handle(data: any): void {
+  console.log(data.text) // 可能引发运行时错误
+  uni.showToast({ title: data.text }) // 不安全
+}
+
+// ✅ 安全的做法
+function handle(data: UTSJSONObject): void {
+  if (typeof data.text == 'string') {
+    console.log(data.text) // 类型安全
+    uni.showToast({ title: data.text }) // 安全
+  } else {
+    console.warn('数据格式错误: 缺少 text 属性')
+  }
+}
+```
 
 遵循这些规范，可以确保组件的质量、性能和可维护性，为用户提供一致的开发体验。

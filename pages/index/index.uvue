@@ -166,11 +166,11 @@
 <style>
 	.container {
 		flex: 1;
-		background-color: var(--bg-page);
+		background-color: #f2f3f5;
 	}
 	
 	.page {
-		background-color: var(--bg-page);
+		background-color: #f2f3f5;
 		padding: 0 20px;
 	}
 	
@@ -192,14 +192,14 @@
 	.title {
 		font-size: 32px;
 		font-weight: 700;
-		color: var(--text-primary);
+		color: #333333;
 		margin-bottom: 8px;
 		letter-spacing: -0.5px;
 	}
 	
 	.subtitle {
 		font-size: 16px;
-		color: var(--text-secondary);
+		color: #909399;
 		margin-bottom: 12px;
 		line-height: 22px;
 		font-weight: 400;
@@ -209,12 +209,10 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--primary-color);
+		background-color: #007aff;
 		border-radius: 16px;
 		padding: 6px 16px;
-		/* #ifdef APP */
 		box-shadow: 0 2px 8px rgba(0, 122, 255, 0.3);
-		/* #endif */
 	}
 	
 	.version-text {
@@ -241,17 +239,17 @@
 	.section-title {
 		font-size: 20px;
 		font-weight: 700;
-		color: var(--text-primary);
+		color: #333333;
 	}
 	
 	.section-count {
 		font-size: 14px;
-		color: var(--text-placeholder);
+		color: #c0c4cc;
 		font-weight: 400;
 	}
 	
 	.component-item {
-		background-color: var(--bg-primary);
+		background-color: #ffffff;
 		border-radius: 12px;
 		padding: 20px;
 		margin-bottom: 12px;
@@ -260,25 +258,14 @@
 		justify-content: space-between;
 		border-width: 1px;
 		border-style: solid;
-		border-color: var(--border-color);
-		transition: all 0.3s ease;
+		border-color: #ebeef5;
 		/* #ifdef APP */
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 		/* #endif */
 	}
 	
-	.component-item:active {
-		transform: scale(0.98);
-		background-color: var(--bg-secondary);
-	}
-	
 	.component-item--disabled {
 		opacity: 0.6;
-	}
-	
-	.component-item--disabled:active {
-		transform: none;
-		background-color: var(--bg-primary);
 	}
 	
 	.component-info {
@@ -289,14 +276,14 @@
 	.component-name {
 		font-size: 16px;
 		font-weight: 700;
-		color: var(--text-primary);
+		color: #333333;
 		margin-bottom: 4px;
 		line-height: 22px;
 	}
 	
 	.component-desc {
 		font-size: 14px;
-		color: var(--text-secondary);
+		color: #909399;
 		line-height: 20px;
 		font-weight: 400;
 	}
@@ -311,7 +298,7 @@
 	
 	.status-text {
 		font-size: 12px;
-		color: var(--warning-color);
+		color: #f0ad4e;
 		background-color: rgba(240, 173, 78, 0.1);
 		padding: 4px 8px;
 		border-radius: 8px;
@@ -320,7 +307,7 @@
 	
 	.arrow-icon {
 		font-size: 18px;
-		color: var(--text-placeholder);
+		color: #c0c4cc;
 		font-weight: 400;
 	}
 	
@@ -332,54 +319,9 @@
 	
 	.footer-text {
 		font-size: 12px;
-		color: var(--text-placeholder);
+		color: #c0c4cc;
 		line-height: 20px;
 		margin-bottom: 4px;
 		font-weight: 400;
-	}
-	
-	.footer-text:last-child {
-		margin-bottom: 0;
-	}
-	
-	/* 响应式适配 */
-	/* #ifdef WEB */
-	@media (max-width: 768px) {
-		.page {
-			padding: 0 16px;
-		}
-		
-		.component-item {
-			padding: 16px;
-		}
-	}
-	
-	@media (min-width: 769px) {
-		.page {
-			max-width: 600px;
-			margin: 0 auto;
-		}
-	}
-	/* #endif */
-	
-	/* 深色主题适配 */
-	@media (prefers-color-scheme: dark) {
-		.logo {
-			/* #ifdef APP */
-			box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
-			/* #endif */
-		}
-		
-		.component-item {
-			/* #ifdef APP */
-			box-shadow: 0 2px 8px rgba(255, 255, 255, 0.02);
-			/* #endif */
-		}
-		
-		.version-badge {
-			/* #ifdef APP */
-			box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
-			/* #endif */
-		}
 	}
 </style>

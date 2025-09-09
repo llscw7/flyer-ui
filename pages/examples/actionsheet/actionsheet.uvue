@@ -1,4 +1,5 @@
 <template>
+	<scroll-view class="container">
   <view class="demo-container">
     <view class="demo-header">
       <text class="demo-title">FlyerActionsheet 操作面板</text>
@@ -8,25 +9,109 @@
     <view class="demo-section">
       <view class="demo-item">
         <text class="demo-item-title">基础用法</text>
-        <text class="demo-item-desc">最简单的操作面板</text>
+        <text class="demo-item-desc">最简单的操作面板，带提示信息</text>
         <button class="demo-button" @click="showBasicActionsheet">显示基础操作面板</button>
+      </view>
+      
+      <view class="demo-item">
+        <text class="demo-item-title">不显示提示</text>
+        <text class="demo-item-desc">无提示信息的操作面板</text>
+        <button class="demo-button" @click="showNoTipsActionsheet">显示无提示操作面板</button>
+      </view>
+      
+      <view class="demo-item">
+        <text class="demo-item-title">自定义按钮颜色</text>
+        <text class="demo-item-desc">不同颜色的操作按钮</text>
+        <button class="demo-button" @click="showColorActionsheet">显示彩色操作面板</button>
+      </view>
+      
+      <view class="demo-item">
+        <text class="demo-item-title">禁用蒙层关闭</text>
+        <text class="demo-item-desc">点击蒙层不会关闭面板</text>
+        <button class="demo-button" @click="showNonMaskClosableActionsheet">显示不可蒙层关闭面板</button>
+      </view>
+      
+      <view class="demo-item">
+        <text class="demo-item-title">无取消按钮</text>
+        <text class="demo-item-desc">不显示取消按钮的操作面板</text>
+        <button class="demo-button" @click="showNoCancelActionsheet">显示无取消按钮面板</button>
+      </view>
+      
+      <view class="demo-item">
+        <text class="demo-item-title">综合示例</text>
+        <text class="demo-item-desc">包含多种配置的复杂示例</text>
+        <button class="demo-button" @click="showComplexActionsheet">显示综合示例面板</button>
       </view>
     </view>
     
     <!-- 基础用法 -->
     <flyer-actionsheet
-      :visible="visible"
-	  :set-visible="setVisible"
+      :visible="basicVisible"
+      :set-visible="setBasicVisible"
       :item-list="basicItems"
-	  tips="请选择一个选项"
-	  @click="handleBasicClick"
+      tips="请选择一个选项"
+      @click="handleBasicClick"
+      @cancel="handleBasicCancel"
+    />
+    
+    <!-- 不显示提示 -->
+    <flyer-actionsheet
+      :visible="noTipsVisible"
+      :set-visible="setNoTipsVisible"
+      :item-list="noTipsItems"
+      tips=""
+      @click="handleNoTipsClick"
+      @cancel="handleNoTipsCancel"
+    />
+    
+    <!-- 自定义颜色 -->
+    <flyer-actionsheet
+      :visible="colorVisible"
+      :set-visible="setColorVisible"
+      :item-list="colorItems"
+      tips="选择操作类型"
+      @click="handleColorClick"
+      @cancel="handleColorCancel"
+    />
+    
+    <!-- 禁用蒙层关闭 -->
+    <flyer-actionsheet
+      :visible="nonMaskClosableVisible"
+      :set-visible="setNonMaskClosableVisible"
+      :item-list="nonMaskClosableItems"
+      tips="点击蒙层无法关闭，只能点击取消或选项"
+      :maskClosable="false"
+      @click="handleNonMaskClosableClick"
+      @cancel="handleNonMaskClosableCancel"
+    />
+    
+    <!-- 无取消按钮 -->
+    <flyer-actionsheet
+      :visible="noCancelVisible"
+      :set-visible="setNoCancelVisible"
+      :item-list="noCancelItems"
+      tips="必须选择一个选项"
+      :isCancel="false"
+      @click="handleNoCancelClick"
+      @cancel="handleNoCancelCancel"
+    />
+    
+    <!-- 综合示例 -->
+    <flyer-actionsheet
+      :visible="complexVisible"
+      :set-visible="setComplexVisible"
+      :item-list="complexItems"
+      tips="文件操作"
+      :maskClosable="false"
+      @click="handleComplexClick"
+      @cancel="handleComplexCancel"
     />
     
   </view>
+	</scroll-view>
 </template>
 
 <script lang="uts">
-	type ItemListType = { text : string, color : string, size : number }
 export default {
   name: 'ActionsheetExample',
 	data() {
@@ -34,38 +119,212 @@ export default {
 			// 基础用法
 			basicItems: [
 				{ text: '选项一', color: '#FF0000', size: 32 },
-				{ text: '选项二',  },
-				{ text: '选项三', size: 40 }
+				{ text: '选项二' },
+				{ text: '选项三', size: 32 }
 			],
-			visible: false,
-			simpleList: [
-				'测试1',
-				'测试2',
-				'测试3',
-			]
+			basicVisible: false,
+			
+			// 不显示提示
+			noTipsItems: [
+				{ text: '拍照' },
+				{ text: '从相册选择' },
+				{ text: '从文件选择' }
+			],
+			noTipsVisible: false,
+			
+			// 自定义颜色
+			colorItems: [
+				{ text: '编辑', color: '#007AFF' },
+				{ text: '分享', color: '#34C759' },
+				{ text: '收藏', color: '#FF9500' },
+				{ text: '删除', color: '#FF3B30' }
+			],
+			colorVisible: false,
+			
+			// 禁用蒙层关闭
+			nonMaskClosableItems: [
+				{ text: '确认操作' },
+				{ text: '稍后处理' }
+			],
+			nonMaskClosableVisible: false,
+			
+			// 无取消按钮
+			noCancelItems: [
+				{ text: '立即支付', color: '#34C759' },
+				{ text: '稍后支付', color: '#FF9500' }
+			],
+			noCancelVisible: false,
+			
+			// 综合示例
+			complexItems: [
+				{ text: '下载', color: '#007AFF', size: 30 },
+				{ text: '重命名', color: '#34C759', size: 28 },
+				{ text: '移动', color: '#FF9500', size: 28 },
+				{ text: '复制', color: '#5AC8FA', size: 28 },
+				{ text: '删除', color: '#FF3B30', size: 30 }
+			],
+			complexVisible: false
 		}
 	},
 	methods: {
-		setVisible(val: boolean) {
-			this.visible = val
+		// 基础用法
+		setBasicVisible(val: boolean) {
+			this.basicVisible = val
 		},
 		showBasicActionsheet(): void {
-			this.setVisible(true)
+			this.setBasicVisible(true)
 		},
-		handleBasicClick(data: any): void {
+		handleBasicClick(data: UTSJSONObject): void {
 			console.log('基础用法点击:', data)
-			this.setVisible(false)
+			this.setBasicVisible(false)
+      if (typeof data.text == 'string') {
+        uni.showToast({
+          title: '点击了: ' + data.text,
+          icon: 'none'
+        })
+      }
+      
 		},
 		handleBasicCancel(): void {
 			console.log('基础用法取消')
-			this.setVisible(false)
+			this.setBasicVisible(false)
 		},
+		
+		// 不显示提示
+		setNoTipsVisible(val: boolean) {
+			this.noTipsVisible = val
+		},
+		showNoTipsActionsheet(): void {
+			this.setNoTipsVisible(true)
+		},
+		handleNoTipsClick(data: UTSJSONObject): void {
+			console.log('无提示用法点击:', data)
+			this.setNoTipsVisible(false)
+			if (typeof data.text == 'string') {
+        uni.showToast({
+          title: '选择了: ' + data.text,
+          icon: 'none'
+        })
+      }
+		},
+		handleNoTipsCancel(): void {
+			console.log('无提示用法取消')
+			this.setNoTipsVisible(false)
+		},
+		
+		// 自定义颜色
+		setColorVisible(val: boolean) {
+			this.colorVisible = val
+		},
+		showColorActionsheet(): void {
+			this.setColorVisible(true)
+		},
+		handleColorClick(data: UTSJSONObject): void {
+			console.log('彩色用法点击:', data)
+			this.setColorVisible(false)
+      if (typeof data.text == 'string') {
+        uni.showToast({
+          title: '执行操作: ' + data.text,
+          icon: 'none'
+        })
+      }
+		},
+		handleColorCancel(): void {
+			console.log('彩色用法取消')
+			this.setColorVisible(false)
+		},
+		
+		// 禁用蒙层关闭
+		setNonMaskClosableVisible(val: boolean) {
+			this.nonMaskClosableVisible = val
+		},
+		showNonMaskClosableActionsheet(): void {
+			this.setNonMaskClosableVisible(true)
+		},
+		handleNonMaskClosableClick(data: UTSJSONObject): void {
+			console.log('禁用蒙层关闭点击:', data)
+			this.setNonMaskClosableVisible(false)
+      if (typeof data.text == 'string') {
+        uni.showToast({
+          title: '选择了: ' + data.text,
+          icon: 'none'
+        })
+      }
+		},
+		handleNonMaskClosableCancel(): void {
+			console.log('禁用蒙层关闭取消')
+			this.setNonMaskClosableVisible(false)
+		},
+		
+		// 无取消按钮
+		setNoCancelVisible(val: boolean) {
+			this.noCancelVisible = val
+		},
+		showNoCancelActionsheet(): void {
+			this.setNoCancelVisible(true)
+		},
+		handleNoCancelClick(data: UTSJSONObject): void {
+			console.log('无取消按钮点击:', data)
+			this.setNoCancelVisible(false)
+      if (typeof data.text == 'string') {
+        uni.showToast({
+          title: '选择了: ' + data.text,
+          icon: 'none'
+        })
+      }
+		},
+		handleNoCancelCancel(): void {
+			console.log('无取消按钮取消')
+			this.setNoCancelVisible(false)
+		},
+		
+		// 综合示例
+		setComplexVisible(val: boolean) {
+			this.complexVisible = val
+		},
+		showComplexActionsheet(): void {
+			this.setComplexVisible(true)
+		},
+		handleComplexClick(data: UTSJSONObject): void {
+			console.log('综合示例点击:', data)
+			this.setComplexVisible(false)
+			
+      if(typeof data.text == 'string') {
+        // 根据不同操作显示不同提示
+        let message = ''
+        switch (data.text) {
+          case '删除':
+            message = '确认删除文件？'
+            break
+          case '下载':
+            message = '开始下载文件'
+            break
+          case '重命名':
+            message = '请输入新名称'
+            break
+          default:
+            message = '执行操作: ' + data.text
+        }
+        
+        uni.showToast({
+          title: message,
+          icon: 'none'
+        })
+      }
+		},
+		handleComplexCancel(): void {
+			console.log('综合示例取消')
+			this.setComplexVisible(false)
+		}
 	}
 }
 
 </script>
 
 <style scoped>
+.container {
+		flex: 1;
+}
 .demo-container {
   padding: 30rpx;
   background-color: #F5F5F5;
@@ -128,9 +387,5 @@ export default {
   padding: 24rpx 40rpx;
   font-size: 28rpx;
   font-weight: normal;
-}
-
-.demo-button:active {
-  background-color: #0051D5;
 }
 </style>
